@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/not_layout_showArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp">
+        <CheckBox
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:id="@+id/not_checkbox"
+            style="@style/checkBoxTheme"
+            android:layout_marginTop="26dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true" />
+
+        <ImageView
+            android:id="@+id/not_img_devece"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/not_checkbox"
+            android:src="@drawable/u8"
+            android:background="@drawable/shape_image_rec"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/not_device_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D180-13140000"
+            android:textSize="15sp"
+            android:layout_toRightOf="@+id/not_img_devece"
+            android:drawableRight="@drawable/icon_tips_bg_d_bt2x"
+            android:layout_marginTop="14dp"/>
+        <TextView
+            android:id="@+id/not_version_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="版本号1.0.0,"
+            android:textSize="11sp"
+            android:layout_below="@+id/not_device_name_tv"
+            android:layout_toRightOf="@+id/not_img_devece"/>
+        <TextView
+            android:id="@+id/not_size_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25.6M"
+            android:textSize="11sp"
+            android:layout_below="@+id/not_device_name_tv"
+            android:layout_toRightOf="@+id/not_version_tv"/>
+        <Button
+            android:id="@+id/not_newfun_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_below="@+id/not_version_tv"
+            android:layout_toRightOf="@+id/not_img_devece"
+            android:background="@drawable/newfun_btn"
+            android:text="新功能"
+            android:textSize="11sp"
+            android:drawableRight="@drawable/newfun_drawbaler"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/not_layout_hideArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/not_hideArea_tv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1、微博评论全面升级，焕然一新"/>
+        <TextView
+            android:id="@+id/not_hideArea_tv2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2、全新发现，精彩内容，触手可得"/>
+        <TextView
+            android:id="@+id/not_hideArea_tv3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3、适配ios10，可直接分享适配到微博"/>
+    </LinearLayout>
+
+
+</LinearLayout>

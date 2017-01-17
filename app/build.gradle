@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+    android {
+        compileSdkVersion 23
+        buildToolsVersion "23.0.1"
+
+
+        defaultConfig {
+            applicationId "com.example.chenld.mpostprotimstest"
+            minSdkVersion 16
+            targetSdkVersion 23
+            versionCode 1
+            versionName "2.0"
+
+            //编译SO时需要加如下代码
+            ndk {
+
+                moduleName "protocol"
+                ldLibs "log", "z", "m"
+                stl = "gnustl_shared"
+                abiFilters "armeabi", "armeabi-v7a", "x86", "x86_64"
+            }
+        }
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+            debug {
+                jniDebuggable true
+            }
+            //运行程序需要如下代码，链接jniLibs中的so文件
+            sourceSets {
+                main {
+                    jni.srcDirs = []
+                }
+            }
+        }
+    }
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':circleimageview')
+    compile files('libs/javabase64-1.3.1.jar')
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+    compile 'com.apkfuns.logutils:library:1.4.2.2'
+    testCompile 'junit:junit:4.12'
+}
+
+
+

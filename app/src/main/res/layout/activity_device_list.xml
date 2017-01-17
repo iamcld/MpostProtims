@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.example.chenld.mpostprotimstest.com.mpos.AddDeviceActivity"
+android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/TitleBackground">
+        <ImageButton
+            android:id="@+id/add_ImgBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/add_btn"
+            android:layout_marginLeft="15dp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/mposList"
+            android:textColor="@color/textColor"
+            android:gravity="center"
+            android:textSize="18sp"/>
+        <Button
+            android:id="@+id/edit_btn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/editor_btn"
+            android:text="@string/edit"
+            android:textSize="15sp"
+            android:textColor="@color/textColor"
+            android:layout_marginRight="30dp" />
+        <Button
+            android:id="@+id/finish_btn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/editor_btn"
+            android:text="@string/finish"
+            android:textSize="15sp"
+            android:textColor="@color/textColor"
+            android:layout_marginRight="15dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updatePos"
+        android:background="@color/updateBackground"/>
+    <ListView
+        android:id="@+id/update_list"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/notUpdatePos"
+        android:background="@color/updateBackground"/>
+
+    <ListView
+        android:id="@+id/not_update_list"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:id="@+id/layout_update_delete"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dp">
+            <RadioButton
+                style="@style/checkBoxTheme"
+                android:id="@+id/radio_all_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/allSelect"
+                android:textColor="@color/radioTextColor"
+                android:checked="false"/>
+            <RadioButton
+                style="@style/checkBoxTheme"
+                android:id="@+id/radio_inverst_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/invertSeletc"
+                android:textColor="@color/radioTextColor"/>
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <!--<Button-->
+            <!--android:id="@+id/update_pos_btn"-->
+            <!--android:layout_width="44dp"-->
+            <!--android:layout_height="34dp"-->
+            <!--android:background="@drawable/update_btn" />-->
+
+        <Button
+            android:id="@+id/update_pos_btn"
+            android:layout_width="44dp"
+            android:layout_height="34dp"
+            android:text="@string/update"
+            android:textColor="@color/textColor"
+            android:textSize="16sp"
+            android:background="@drawable/selector_update_btn" />
+        <Button
+            android:id="@+id/delete_pos_btn"
+            android:layout_width="44dp"
+            android:layout_height="34dp"
+            android:background="@drawable/selector_delete_btn"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:text="@string/delete" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

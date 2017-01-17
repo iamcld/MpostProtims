@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/bt_pair_device_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/u8"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_image_rec"/>
+    <TextView
+        android:id="@+id/bt_pair_device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="D210-15540000"
+        android:layout_toRightOf="@+id/bt_pair_device_image"
+        android:layout_marginTop="15dp"/>
+    <TextView
+        android:id="@+id/bt_pair_device_mac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="08:00:20:0A:8C:6D"
+        android:layout_toRightOf="@+id/bt_pair_device_image"
+        android:layout_below="@+id/bt_pair_device_name"/>
+    <Button
+        android:id="@+id/bt_pair_btn"
+        android:layout_width="44dp"
+        android:layout_height="24dp"
+        android:background="@drawable/pair_btn"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"/>
+
+</RelativeLayout>

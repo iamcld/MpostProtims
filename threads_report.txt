@@ -1,0 +1,56 @@
+"<15> Thread-212@830036808504" prio=5 runnable
+  java.lang.Thread.State: RUNNABLE
+	  at com.mpos.BluetoothReceiver$MyThread.run(BluetoothReceiver.java:182)
+
+"<14> Thread-211@830036807072" prio=5 runnable
+  java.lang.Thread.State: RUNNABLE
+	  at com.mpos.BluetoothReceiver$MyThread.run(BluetoothReceiver.java:182)
+
+"<13> Thread-210@830036646864" prio=5 runnable
+  java.lang.Thread.State: RUNNABLE
+	  at com.mpos.BluetoothReceiver$MyThread.run(BluetoothReceiver.java:182)
+
+"<1> main@830025755816" prio=5 runnable
+  java.lang.Thread.State: RUNNABLE
+	 Incompatible thread state: thread not suspended
+
+"<12> Binder_3@830035625360" prio=5 runnable
+  java.lang.Thread.State: RUNNABLE
+	 Incompatible thread state: thread not suspended
+
+"<11> Thread-208@830035115376" prio=5 runnable
+  java.lang.Thread.State: RUNNABLE
+	 Incompatible thread state: thread not suspended
+
+"<10> Binder_2@830035017752" prio=5 runnable
+  java.lang.Thread.State: RUNNABLE
+	 Incompatible thread state: thread not suspended
+
+"<9> Binder_1@830035017120" prio=5 runnable
+  java.lang.Thread.State: RUNNABLE
+	 Incompatible thread state: thread not suspended
+
+"<8> FinalizerWatchdogDaemon@830035002120" daemon prio=5 waiting
+  java.lang.Thread.State: WAITING
+	 Incompatible thread state: thread not suspended
+
+"<7> FinalizerDaemon@830035001752" daemon prio=5 waiting
+  java.lang.Thread.State: WAITING
+	 Incompatible thread state: thread not suspended
+
+"<6> ReferenceQueueDaemon@830035000248" daemon prio=5 waiting
+  java.lang.Thread.State: WAITING
+	 Incompatible thread state: thread not suspended
+
+"<5> Compiler@830035000008" daemon prio=5 waiting
+  java.lang.Thread.State: WAITING
+	 Incompatible thread state: thread not suspended
+
+"<3> Signal Catcher@830034999528" daemon prio=5 waiting
+  java.lang.Thread.State: WAITING
+	 Incompatible thread state: thread not suspended
+
+"<2> GC@830034999304" daemon prio=5 waiting
+  java.lang.Thread.State: WAITING
+	 Incompatible thread state: thread not suspended
+
