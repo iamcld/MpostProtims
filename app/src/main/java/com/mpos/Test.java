@@ -5,4 +5,7 @@ package com.mpos;
  */
 
 public class Test {
+
+    public Test() {
+    }
 }
