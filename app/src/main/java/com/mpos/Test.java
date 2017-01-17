@@ -10,6 +10,6 @@ public class Test {
 
     public Test() {
 
-        LogUtils.d("this is test...");
+        LogUtils.d("this is modify test...");
     }
 }
