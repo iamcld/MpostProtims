@@ -518,6 +518,7 @@ JNIEXPORT void JNICALL Java_com_mpos_sdk_MposSDK_release
 {
     JNIEnv   *sgEnv;
     LOGE("Java_com_mpos_sdk_MposSDK_release");
+    //cld test
     //(*g_jvm)->AttachCurrentThread(g_jvm, &sgEnv, NULL);
 
 	//(*sgEnv)->DeleteGlobalRef(sgEnv, sgObj);

@@ -71,7 +71,6 @@ public class BtPairAdapter extends BaseAdapter{
     //手动匹配时调用
     public void deleteDevice(ArrayList<HashMap<String, String>> deleteList){
 
-        //System.out.println("删除列表:"+deleteList);
         LogUtils.i("删除列表:"+deleteList);
         for (int j = 0; j < deleteList.size(); j++) {
             for (int i = 0; i < list.size(); i++) {
@@ -155,7 +154,6 @@ public class BtPairAdapter extends BaseAdapter{
             BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(list.get(position)
                     .get(MposApplication.DEVICE_MAC));
 
-            Boolean returnValue = false;
             if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_NONE) {
                 try {
                     //利用反射方法调用BluetoothDevice.createBond(BluetoothDevice remoteDevice);
@@ -175,7 +173,6 @@ public class BtPairAdapter extends BaseAdapter{
                             context.sendBroadcast(intent);//发送自定义广播
                             break;
                         }
-                        //Log.i("mytag", new String().valueOf(System.currentTimeMillis()));
                     }
 
                 } catch (NoSuchMethodException e) {

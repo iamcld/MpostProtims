@@ -240,14 +240,12 @@ unsigned char* GetCharSet(int iCharSet)
 
 void MySleep(unsigned long ulDelay)
 {
-#ifdef CLD_DEBUF
 #if defined(WIN32) || defined(WINDOWS)
 	Sleep(ulDelay);
 #else
 	LOGI("MySleep Start");
 	usleep(ulDelay*1000);
 	LOGI("MySleep End");
-#endif
 #endif
 }
 

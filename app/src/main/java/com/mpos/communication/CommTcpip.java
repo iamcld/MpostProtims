@@ -76,6 +76,7 @@ public class CommTcpip implements ICommunicator {
             return -1;
         }
         if (sendLen <= 0 || offset < 0 || null == buf) {
+            LogUtils.d("sendLen <= 0 || offset < 0 || null == buf");
             return -2;
         }
 
@@ -88,16 +89,18 @@ public class CommTcpip implements ICommunicator {
         } catch (IOException e) {
             LogUtils.e(e.toString());
         }
-        LogUtils.d("sendLen" + sendLen);
+        LogUtils.d("sendLen:" + sendLen);
         return sendLen;
 
     }
 
     public  int recv(byte[] buf, int offset, int maxLen) {
         if (null == client || null == ipInputStream || !isIpConected) {
+            LogUtils.d("null == client || null == ipInputStream || !isIpConected");
             return -1;
         }
         if (null == buf || maxLen <= 0 || offset < 0) {
+            LogUtils.d("null == buf || maxLen <= 0 || offset < 0");
             return -2;
         }
 

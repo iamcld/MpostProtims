@@ -12,6 +12,7 @@
     <string name="serverIp">Server IP</string>
     <string name="serverPort">Server Port</string>
     <string name="tid">TID</string>
+    <string name="atumn">允许移动数据下载</string>
     <string name="save1">保存</string>
     <string name="deviceList">设备列表</string>
     <string name="addDevice">添加设备</string>

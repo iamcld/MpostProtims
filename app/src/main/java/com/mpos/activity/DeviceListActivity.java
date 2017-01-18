@@ -134,7 +134,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     }
 
     public void UpdateDeviceAdapter(Boolean isShow){
-        updateDeviceAdapter = new UpdateDeviceAdapter(this, datasUpdate, isShow);
+        updateDeviceAdapter = new UpdateDeviceAdapter(this, datasUpdate, isShow, true);
         updateList.setAdapter(updateDeviceAdapter);
     }
 

@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.chenld.mpostprotimstest.R;
 import com.mpos.MposApplication;
 import com.mpos.activity.DownloadActivity;
 import com.mpos.activity.ShowDeviceInfoActivity;
+import com.pax.utils.Utils;
 
 
 import java.util.ArrayList;
@@ -36,13 +38,17 @@ public class UpdateDeviceAdapter extends BaseAdapter{
     private int currentItem = -1; //用于记录点击的 Item 的 position，是控制 item 展开的核心
     private boolean isShow = false;
     private static HashMap<Integer, Boolean> isSelected;//用于存储checkBox的选中状态
+    private boolean mSwitch = false;
 
-    public UpdateDeviceAdapter(Context context, ArrayList<HashMap<String,String>> list,Boolean isShow){
+
+    public UpdateDeviceAdapter(Context context, ArrayList<HashMap<String,String>> list,Boolean isShow,
+                               boolean mSwitch){
         super();
         this.context = context;
         this.list = list;
         this.isShow = isShow;
         isSelected = new HashMap<Integer,Boolean>();
+        this.mSwitch = mSwitch;
         // 初始化数据
         initDate();
     }
@@ -120,25 +126,25 @@ public class UpdateDeviceAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-                if(btAdapter != null) {
-                    if (!btAdapter.isEnabled()) {
-                        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        context.startActivity(intent);
-                    }else {
-                        Toast.makeText(context,"Toast...",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(context, DownloadActivity.class);
-                        ArrayList<String> updateDeviceList = new ArrayList<String>();
-                        //intent.putStringArrayListExtra("devices", list);
-                        //intent.putParcelableArrayListExtra("devices", (ArrayList<? extends Parcelable>) list);
+                if (Utils.isNetworkAvailable(context, mSwitch)){
+                    if(btAdapter != null) {
+                        if (!btAdapter.isEnabled()) {
+                            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                            context.startActivity(intent);
+                        }else {
+                            Toast.makeText(context,"Toast...",Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(context, DownloadActivity.class);
+                            ArrayList<String> updateDeviceList = new ArrayList<String>();
+                            //intent.putStringArrayListExtra("devices", list);
+                            //intent.putParcelableArrayListExtra("devices", (ArrayList<? extends Parcelable>) list);
 //                        intent.putExtra(MposApplication.DEVICE_MAC, list.get(position).get(MposApplication.DEVICE_MAC));
 //                        intent.putExtra(MposApplication.DEVICE_NAME, list.get(position).get(MposApplication.DEVICE_NAME));
 
-                        updateDeviceList.add(list.get(position).get(MposApplication.DEVICE_NAME)+"\n"+
-                                list.get(position).get(MposApplication.DEVICE_MAC));
-                        intent.putStringArrayListExtra(MposApplication.CHECK_UPDATE_DEVICE, updateDeviceList);
-
-
-                        context.startActivity(intent);
+                            updateDeviceList.add(list.get(position).get(MposApplication.DEVICE_NAME)+"\n"+
+                                    list.get(position).get(MposApplication.DEVICE_MAC));
+                            intent.putStringArrayListExtra(MposApplication.CHECK_UPDATE_DEVICE, updateDeviceList);
+                            context.startActivity(intent);
+                        }
                     }
                 }
             }

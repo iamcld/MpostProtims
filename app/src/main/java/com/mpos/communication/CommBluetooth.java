@@ -67,45 +67,47 @@ public class CommBluetooth implements ICommunicator{
 
         //启动线程，连接蓝牙设备
         //new Thread(new Runnable() {
-           // @Override
-           // public void run() {
-                try {
-                    //3、根据UUID 创建并返回一个BluetoothSocket,UUID需要和服务器端的一样
-                    btsocket = device.createInsecureRfcommSocketToServiceRecord(BT_UUID);
-                    LogUtils.d("蓝牙套接字btsocket:"+btsocket);
-                    if (btsocket != null){
-                        LogUtils.d("当前线程:"+Thread.currentThread());
-                        btsocket.connect();
-                        LogUtils.d("连接成功");
-                        //4、处理客户端输入输出流
-                        btOut = btsocket.getOutputStream();
-                        btIn = btsocket.getInputStream();
-                        if (btOut == null || btIn == null){
-                            //isBtConnected = false;
-                            isBtConnected = true;
-                            LogUtils.i("btout或btIn 为null");
-                            return false;
-                            //handler.sendEmptyMessage(CONN_FAIL);//发送一个空消息，表示连接成功
-                        }else {
-                            LogUtils.i("-------");
-                            isBtConnected = true;
-                            //handler.sendEmptyMessage(CONN_SUCCESS);//发送一个空消息，表示连接成功
-                        }
-                    }else {
-                        LogUtils.d(TAG,"套接字创建失败1");
-                        return false;
-                    }
+        // @Override
+        // public void run() {
+        try {
+            //3、根据UUID 创建并返回一个BluetoothSocket,UUID需要和服务器端的一样
+            btsocket = device.createInsecureRfcommSocketToServiceRecord(BT_UUID);
+            LogUtils.d("蓝牙套接字btsocket:"+btsocket);
+            if (btsocket != null){
+                LogUtils.d("当前线程:"+Thread.currentThread());
+                btsocket.connect();
+                LogUtils.d("连接成功");
+                //4、处理客户端输入输出流
+                btOut = btsocket.getOutputStream();
+                btIn = btsocket.getInputStream();
+                if (btOut == null || btIn == null){
+                    isBtConnected = false;
 
-                } catch (IOException e) {
-                    LogUtils.d("当前线程:"+Thread.currentThread());
-                    LogUtils.d("套接字创建失败2");
-                    e.printStackTrace();
-                    LogUtils.d("套接字创建失败2,return false:");
-                    //handler.sendEmptyMessage(CONN_FAIL);//发送一个空消息，表示连接成功
+                    //cld test
+                    //isBtConnected = true;
+                    LogUtils.i("btout或btIn 为null");
                     return false;
+                    //handler.sendEmptyMessage(CONN_FAIL);//发送一个空消息，表示连接成功
+                }else {
+                    LogUtils.i("-------");
+                    isBtConnected = true;
+                    //handler.sendEmptyMessage(CONN_SUCCESS);//发送一个空消息，表示连接成功
                 }
-            //}
-       // }).start();
+            }else {
+                LogUtils.d(TAG,"套接字创建失败1");
+                return false;
+            }
+
+        } catch (IOException e) {
+            LogUtils.d("当前线程:"+Thread.currentThread());
+            LogUtils.d("套接字创建失败2");
+            e.printStackTrace();
+            LogUtils.d("套接字创建失败2,return false:");
+            //handler.sendEmptyMessage(CONN_FAIL);//发送一个空消息，表示连接成功
+            return false;
+        }
+        //}
+        // }).start();
         LogUtils.d("当前线程:"+Thread.currentThread());
         LogUtils.d("连接成功");
         return true;
@@ -151,12 +153,17 @@ public class CommBluetooth implements ICommunicator{
         }
         int totalLen = 0;
         int cLen = 0;
-        long end = System.currentTimeMillis() + RECV_TIMEOUT_DEFAULT;
+        //long end = System.currentTimeMillis() + RECV_TIMEOUT_DEFAULT;
+
+        //cld test
+        long end = System.currentTimeMillis() + 10000;
         LogUtils.d("System.currentTimeMillis() + RECV_TIMEOUT_DEFAULT"+end);
         while (totalLen < exp && (System.currentTimeMillis() < end)){
             cLen = btRingBuffer.read(buf, offset + totalLen, exp - totalLen);
             totalLen += cLen;
-            Thread.yield();
+
+            //cld test
+            //Thread.yield();
             if (btIoException != null){
                 LogUtils.d("btIoException.....");
                 return -1;
@@ -220,9 +227,9 @@ public class CommBluetooth implements ICommunicator{
         }finally {
             btOut = null;
             btIn = null;
-            //isBtConnected = false;
+            isBtConnected = false;
             //cld test
-            isBtConnected = true;
+            //isBtConnected = true;
             LogUtils.d("bt close finally");
         }
 

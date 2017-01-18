@@ -52,12 +52,8 @@ public class BtRepairAdapter extends BaseAdapter{
         for (BluetoothDevice bd :devices){
             flag = false;
             for (int i = 0; i < list.size(); i++){
-//                Log.i(TAG, "deviceMac:"+  bd.getAddress());
-//                Log.i(TAG, "deviceMac:"+  list.get(i).get("deviceMac"));
-                //Log.i(TAG, "11deviceMac:"+  bd.getAddress());
                 if (list.get(i).get(MposApplication.DEVICE_MAC).equals(bd.getAddress())){
                     flag = true;
-//                    Log.i(TAG, "flag is true!");
                 }
             }
             if (!flag){
@@ -67,7 +63,6 @@ public class BtRepairAdapter extends BaseAdapter{
                 insertDataToDatabase( bd.getAddress(), bd.getName());//插入到数据库中
                 list.add(hm);
                 deleteResult.add(hm);
-                //resultList.add(bd.getAddress());
             }
         }
         return deleteResult;
@@ -84,15 +79,10 @@ public class BtRepairAdapter extends BaseAdapter{
         //如果数据库中没有，则插入
         if (mPosOld == null){
             LogUtils.i("数据库中没有相同的记录，插入新数据");
-            //更新状态默认为0，不更新
-            //MPos mPosNew = new MPos(mac, name, "0");
             MPos mPosNew = new MPos(mac, name);
             databaseAdapter.rawAdd(mPosNew);
         }
-//        else if(mPosOld.getIsupdate() == null){
-//            MPos mPosNew = new MPos(mac, name, "0");
-//            databaseAdapter.rawUpdate(mPosNew);
-//        }
+
     }
     //数据库中
     public void findDatafromDatabase(){

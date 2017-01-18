@@ -536,7 +536,10 @@ public class DownloadActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            loaders.get(0).setInterrupt(true);
+            for (int i = 0; i < loaders.size(); i++){
+                loaders.get(0).setInterrupt(true);
+            }
+
             btAdapter.disable();
             Toast.makeText(getApplicationContext(), getString(R.string.return_tips), Toast.LENGTH_LONG).show();
             finish();

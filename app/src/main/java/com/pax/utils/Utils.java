@@ -1,5 +1,11 @@
 package com.pax.utils;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
+
 import com.apkfuns.logutils.LogUtils;
 
 import java.util.Random;
@@ -393,5 +399,63 @@ public class Utils {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * 判断网络是否可用
+	 * @param context
+	 * @param flag 是否支持移动网络
+     * @return
+     */
+	public static boolean isNetworkAvailable(Context context, Boolean flag) {
+		// 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
+		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivityManager == null) {
+			return false;
+		} else {
+			NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+
+
+			if (networkInfo != null && networkInfo.length > 0) {
+				for (int i = 0; i < networkInfo.length; i++) {
+					LogUtils.d(i + "===状态===" + networkInfo[i].getState());
+					LogUtils.d(i + "===类型===" + networkInfo[i].getTypeName());
+
+					if (flag){
+						// 判断当前网络状态是否为连接状态
+						if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
+							return true;
+						}
+					}else {
+						// 判断当前wifi网络状态是否为连接状态
+						if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED &&
+								networkInfo[i].getTypeName().equals("WIFI") ||
+								networkInfo[i].getTypeName().equals("wifi")) {
+							return true;
+						}
+					}
+
+				}
+			}
+
+			Toast.makeText(context,"请检查网络", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+	}
+
+	public static boolean isBluetoothAvailable() {
+		BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+		if (btAdapter == null) {
+			return false;
+		}
+		if (!btAdapter.isEnabled()) {
+//                Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//                getContext().startActivity(intent);
+			LogUtils.d("蓝牙不可用");
+			return false;
+		} else {
+			LogUtils.d("蓝牙可用");
+			return true;
+		}
 	}
 }

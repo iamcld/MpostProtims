@@ -1,6 +1,8 @@
 package com.mpos.activity;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import com.mpos.db.DatabaseAdapter;
 import com.example.chenld.mpostprotimstest.R;
 import com.mpos.db.MPos;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class ShowDeviceInfoActivity extends Activity implements View.OnClickListener{
@@ -107,6 +111,23 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
                 String mac = intent.getStringExtra(MposApplication.DEVICE_MAC);
                 DatabaseAdapter databaseAdapter = new DatabaseAdapter(ShowDeviceInfoActivity.this);
                 databaseAdapter.rawDelete(mac);
+
+                //取消蓝牙匹配
+                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(mac);
+                if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED){
+                    try {
+                        Method removeBondMethod = BluetoothDevice.class.getMethod("removeBond");
+                        removeBondMethod.invoke(bluetoothDevice);//取消匹配
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 finish();
             }
         });
@@ -120,4 +141,5 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
         builder.show();
 
     }
+
 }

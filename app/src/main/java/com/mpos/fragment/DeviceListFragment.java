@@ -2,12 +2,10 @@ package com.mpos.fragment;
 
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,6 +40,8 @@ import com.mpos.db.MPos;
 import com.mpos.sdk.MposSDK;
 import com.pax.utils.Utils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
@@ -83,6 +83,8 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
     //单任务线程池
     private ExecutorService esBt = Executors.newSingleThreadExecutor();
     private ExecutorService esTcp = Executors.newSingleThreadExecutor();
+    private SharedPreferences sp = null;
+    private Boolean mSwitch = false;
 
 
     private Handler handler = new Handler() {
@@ -107,9 +109,6 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                     break;
                 case UPDATE:
                     ArrayList<String> checkUpdateDevice = new ArrayList<>();
-                    //Toast.makeText(DeviceListActivity.this, "update pos",Toast.LENGTH_SHORT).show();
-                    //NotUpdateDeviceAdapter(false);
-                    //UpdateDeviceAdapter(false);
                     finish_btn.setVisibility(View.GONE);//完成按钮不可见
                     edit_btn.setVisibility(View.VISIBLE);//编辑按钮可见
                     layout_update_delete.setVisibility(View.GONE);//水平布局
@@ -122,26 +121,28 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                     }
                     NotUpdateDeviceAdapter(false);
                     UpdateDeviceAdapter(false);
-                    if (checkUpdateDevice.size() > 0){
-                        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-                        if(btAdapter != null) {
-                            if (!btAdapter.isEnabled()) {
-                                Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                                getContext().startActivity(intent);
-                            }else {
-                                Intent intent = new Intent();
-                                intent.setClass(getActivity(), DownloadActivity.class);
-                                intent.putStringArrayListExtra(MposApplication.CHECK_UPDATE_DEVICE, checkUpdateDevice);
-                                startActivity(intent);
+
+                    if (Utils.isNetworkAvailable(getContext(), mSwitch)){
+                        if (checkUpdateDevice.size() > 0){
+                            BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+                            if(btAdapter != null) {
+                                if (!btAdapter.isEnabled()) {
+                                    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                                    getContext().startActivity(intent);
+                                }else {
+                                    Intent intent = new Intent();
+                                    intent.setClass(getActivity(), DownloadActivity.class);
+                                    intent.putStringArrayListExtra(MposApplication.CHECK_UPDATE_DEVICE, checkUpdateDevice);
+                                    startActivity(intent);
+                                }
                             }
                         }
                     }
+
                     break;
                 case DELETE:
                     int i;
-                    //Toast.makeText(DeviceListActivity.this, "delete pos",Toast.LENGTH_SHORT).show();
-                    //NotUpdateDeviceAdapter(false);
-                    //UpdateDeviceAdapter(false);
+                    BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                     finish_btn.setVisibility(View.GONE);//完成按钮不可见
                     edit_btn.setVisibility(View.VISIBLE);//编辑按钮可见
                     layout_update_delete.setVisibility(View.GONE);//水平布局
@@ -155,6 +156,9 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                             databaseAdapter.rawDelete(mac);
                             datasUpdate.remove(i);
                             i--;
+                            //取消蓝牙匹配
+                            BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(mac);
+                            removeBond(bluetoothDevice);
 
                         }
                     }
@@ -166,6 +170,9 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                             databaseAdapter.rawDelete(mac);
                             datasNotUpdate.remove(i);
                             i--;
+                            //取消蓝牙匹配
+                            BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(mac);
+                            removeBond(bluetoothDevice);
                         }
                     }
 
@@ -190,6 +197,20 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
         }
     };
 
+    private void removeBond(BluetoothDevice bluetoothDevice){
+        if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED){
+            try {
+                Method removeBondMethod = BluetoothDevice.class.getMethod("removeBond");
+                removeBondMethod.invoke(bluetoothDevice);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 
@@ -202,9 +223,23 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_device_list, container, false);
+        sp = getContext().getSharedPreferences(ServerSetActivity.SHARED_MAIN, Context.MODE_PRIVATE);
         initView(view);
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mSwitch = sp.getBoolean(ServerSetActivity.KEY_SWITCH_STATE, false);
+
+        getDataFromDB();
+        //网络和蓝牙均可用才访问后台和设备
+        if (Utils.isNetworkAvailable(getContext(), true) && Utils.isBluetoothAvailable()) {
+            initThread();
+        }
+        initDataList();
     }
 
 
@@ -239,7 +274,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
     }
 
     public void UpdateDeviceAdapter(Boolean isShow) {
-        updateDeviceAdapter = new UpdateDeviceAdapter(getContext(), datasUpdate, isShow);
+        updateDeviceAdapter = new UpdateDeviceAdapter(getContext(), datasUpdate, isShow, mSwitch);
         updateList.setAdapter(updateDeviceAdapter);
     }
 
@@ -325,60 +360,13 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        getDataFromDB();
-        //网络和蓝牙均可用才访问后台和设备
-        if (isNetworkAvailable() && isBluetoothAvailable()) {
-            initThread();
-        }
-        initDataList();
-    }
 
     public void getDataFromDB() {
         databaseAdapter = new DatabaseAdapter(getContext());
         mPoslist = new ArrayList<MPos>();
         mPoslist = databaseAdapter.rawFindAll();
         LogUtils.i("mPoslist" + mPoslist);
-    }
-
-    public boolean isBluetoothAvailable() {
-        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (btAdapter == null) {
-            return false;
-        }
-        if (!btAdapter.isEnabled()) {
-//                Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                getContext().startActivity(intent);
-            LogUtils.d("蓝牙不可用");
-            return false;
-        } else {
-            LogUtils.d("蓝牙可用");
-            return true;
-        }
-    }
-
-    public boolean isNetworkAvailable() {
-        // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager == null) {
-            return false;
-        } else {
-            NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
-            if (networkInfo != null && networkInfo.length > 0) {
-                for (int i = 0; i < networkInfo.length; i++) {
-                    LogUtils.d(i + "===状态===" + networkInfo[i].getState());
-                    LogUtils.d(i + "===类型===" + networkInfo[i].getTypeName());
-                    // 判断当前网络状态是否为连接状态
-                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
     }
 
     //初始化列表数据
@@ -587,120 +575,10 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
         }
     }
 
-//    private class MyThread extends Thread {
-//        private Context context;
-//        private String mac;
-//        private String name;
-//        private String sn;
-//
-//        public MyThread(Context context, String mac, String name, String sn) {
-//            this.context = context;
-//            this.mac = mac;
-//            this.name = name;
-//            this.sn = sn;
-//
-//        }
-//
-//        @Override
-//        public void run() {
-//            SharedPreferences sp;
-//            String server_ip;
-//            String server_port;
-//            String key_tid;
-//            byte[] termVerInfo = new byte[8+1];
-//            byte[] termSN = new byte[8+1];
-//            byte[] terminalInfo = new byte[30+1];
-//            CommTcpip commTcpip;
-//            CommBluetooth commBluetooth;
-//            MposSDK mposSDK;
-//            MPos mPos;
-//            int isupdate = 0;
-//
-//            sp = context.getSharedPreferences(ServerSetActivity.SHARED_MAIN, Context.MODE_PRIVATE);
-//
-//            server_ip = sp.getString(ServerSetActivity.KEY_SERVER_IP, null);
-//            server_port = sp.getString(ServerSetActivity.KEY_SERVER_PORT, null);
-//            key_tid = sp.getString(ServerSetActivity.KEY_TID, null);
-//            if (server_ip == null){
-//                server_ip = "192.168.0.136";
-//            }
-//            if (server_port == null){
-//                server_port = "8580";
-//            }
-//            if (key_tid == null){
-//                key_tid = "00000001";
-//            }
-//
-//            LogUtils.i("BtThread 中线程id:" + Thread.currentThread());
-//            commTcpip = new CommTcpip(server_ip,
-//                    Integer.valueOf(server_port));
-//            commBluetooth = new CommBluetooth(mac);
-//
-//            mposSDK = new MposSDK();
-//            mposSDK.setTermId(key_tid);
-//            mposSDK.setMposCommunicator(commBluetooth);
-//            mposSDK.setTmsCommunicator(commTcpip);
-//
-//            LogUtils.d("服务器地址:"+server_ip);
-//            LogUtils.d("服务器端口:"+server_port);
-//            LogUtils.d("TID:"+key_tid);
-//
-//            mposSDK.initEnv();
-//            LogUtils.d("isUpdate befor...");
-//
-//            //获取更新状态只需要连接TMS后台，不需要连接Mpos
-//            //只跟TID有关系
-//            isupdate = mposSDK.isUpdate();
-//            LogUtils.d("设备是否更新 isupdate:" + isupdate);
-//            commTcpip.close();
-//
-//            DatabaseAdapter databaseAdapter = new DatabaseAdapter(context);
-//            ArrayList<MPos> mPoslistbefor = databaseAdapter.rawFindAll();
-//            LogUtils.i("数据库之前:" + mPoslistbefor);
-//            //(String mac, String name, String sn, String pn, String os_version, String boot_version,battery)
-//
-//            if (sn == null){
-//                LogUtils.i("连接蓝牙设备中...");
-//                if (commBluetooth.connect()){
-//                    termVerInfo = mposSDK.getTermVerInfo();
-//                    LogUtils.i("终端版本为:" + new Utils().bcd2Str(termVerInfo));
-//
-//                    //接收处已经开了一个线程
-//                    termSN = mposSDK.getTermSN();
-//                    LogUtils.i("终端sn为:" + new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)));
-//
-////                terminalInfo = mposSDK.getTerminalInfo();
-////                LogUtils.i("终端信息为:" + new Utils().bcd2Str(termVerInfo));
-//
-//                    if (termVerInfo[2] > 9) {
-//                        mPos = new MPos(mac, name, new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)),
-//                                null, String.valueOf(termVerInfo[1]) + "." + String.valueOf(termVerInfo[2]),
-//                                String.valueOf(termVerInfo[0]), null, String.valueOf(isupdate));
-//                    } else {
-//                        mPos = new MPos(mac, name, new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)),
-//                                null, String.valueOf(termVerInfo[1]) + ".0" + String.valueOf(termVerInfo[2]),
-//                                String.valueOf(termVerInfo[0]), null, String.valueOf(isupdate));
-//                    }
-//                    databaseAdapter.rawUpdate(mPos);
-//                    commBluetooth.close();
-//                }
-//            }else {
-//                mPos = new MPos(String.valueOf(isupdate));
-//                databaseAdapter.rawUpdate(mPos);
-//            }
-//
-//
-//            ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
-//            LogUtils.i("数据库更新后:"+ mPoslist);
-//
-//        }
-//    }
 
     //初始化更新列表数据
     private void initUpdataDataList() {
         datasUpdate = new ArrayList<HashMap<String, String>>();
-//        DatabaseAdapter databaseAdapter = new DatabaseAdapter(getContext());
-//        ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
 
         for (int i = 0; i < mPoslist.size(); i++) {
             HashMap<String, String> items = new HashMap<>();
@@ -723,8 +601,6 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
     //初始化无更新列表数据
     private void initNotUpdataDataList() {
         datasNotUpdate = new ArrayList<HashMap<String, String>>();
-//        DatabaseAdapter databaseAdapter = new DatabaseAdapter(getContext());
-//        ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
 
         for (int i = 0; i < mPoslist.size(); i++) {
             HashMap<String, String> items = new HashMap<>();
