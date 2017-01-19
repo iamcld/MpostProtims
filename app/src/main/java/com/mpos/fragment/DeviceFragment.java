@@ -65,9 +65,9 @@ public class DeviceFragment extends Fragment implements View.OnClickListener{
 
     private void initData(){
         mDatas = new ArrayList<Integer>(Arrays.asList(
-                R.drawable.u8,R.drawable.u8,R.drawable.u8,R.drawable.u8,
-                R.drawable.u8,R.drawable.u8,R.drawable.u8,R.drawable.u8,
-                R.drawable.u8
+                R.drawable.d180,R.drawable.d180,R.drawable.d180,R.drawable.d180,
+                R.drawable.d180,R.drawable.d180,R.drawable.d180,R.drawable.d180,
+                R.drawable.d180
         ));
     }
 

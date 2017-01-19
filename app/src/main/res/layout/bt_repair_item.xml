@@ -6,7 +6,7 @@
         android:id="@+id/bt_repair_device_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/u8"
+        android:src="@drawable/d180"
         android:layout_margin="5dp"
         android:background="@drawable/shape_image_rec"/>
     <TextView

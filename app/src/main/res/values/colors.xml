@@ -16,5 +16,6 @@
     <color name="paleRed">#d28d8d</color>
     <color name="black">#000000</color>
     <color name="radioTextColor">#666666</color>
+    <color name="green">#1ac41a</color>
 
 </resources>

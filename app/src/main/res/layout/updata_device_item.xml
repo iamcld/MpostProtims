@@ -22,7 +22,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_toRightOf="@+id/update_checkbox"
-            android:src="@drawable/u8"
+            android:src="@drawable/d180"
             android:background="@drawable/shape_image_rec"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"/>

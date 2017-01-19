@@ -3,43 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.chenld.mpostprotimstest.com.mpos.ServerSetActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.chenld.mpostprotimstest.com.mpos.ServerSetActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:background="@color/TitleBackground">
+
         <ImageView
             android:id="@+id/back_iv"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:src="@drawable/icon_back2x"
+            android:paddingLeft="10dp"
             android:paddingTop="10dp"
-            android:paddingLeft="10dp"/>
+            android:src="@drawable/icon_back2x" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/serverSet2"
             android:textColor="@color/textColor"
-            android:gravity="center"
             android:textSize="18sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/serverIp"/>
+            android:text="@string/serverIp" />
+
         <EditText
             android:id="@+id/serverip_edit"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:ems="15"
-            android:digits="0123456789."/>
+            android:digits="0123456789."
+            android:ems="15" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,11 +52,11 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/serverPort"
-            android:id="@+id/textView2" />
+            android:text="@string/serverPort" />
 
         <EditText
             android:id="@+id/serverport_edit"
@@ -59,16 +64,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:ems="10"
-            android:inputType="number"/>
+            android:inputType="number" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/tid"/>
+            android:text="@string/tid" />
 
         <EditText
             android:id="@+id/tid_edit"
@@ -76,35 +83,32 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:ems="10"
-            android:inputType="text"/>
+            android:inputType="text" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <Switch
+        android:id="@+id/aSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/atumn"
+        android:textOff="否"
+        android:textOn="是"
+                android:switchMinWidth="15dp"
+        android:thumb="@drawable/selector_switch_thumb"
+        android:track="@drawable/selector_switch_track" />
 
-        <Switch
-            android:theme="@style/mySwitch"
-            android:text="@string/atumn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/aSwitch"
-            android:textOff="否"
-            android:textOn="是" />
-
-    </LinearLayout>
 
     <View
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/updateBackground"/>
+        android:layout_marginTop="10dp"
+        android:background="@color/updateBackground" />
 
     <Button
+        android:id="@+id/save_btn"
         android:layout_width="match_parent"
         android:layout_height="26dp"
-        android:text="@string/save1"
         android:background="@drawable/selector_add"
-        android:id="@+id/save_btn"/>
+        android:text="@string/save1" />
 
 </LinearLayout>

@@ -39,7 +39,7 @@
             android:layout_height="80dp"
             android:layout_marginTop="15dp"
             android:layout_gravity="center"
-            android:src="@drawable/u8" />
+            android:src="@drawable/d180" />
         <TextView
             android:id="@+id/tv_show_pos_name"
             android:layout_width="match_parent"

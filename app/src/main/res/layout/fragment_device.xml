@@ -25,7 +25,7 @@
                 android:layout_below="@+id/state_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/u8"
+                android:src="@drawable/d180"
                 android:paddingTop="10dp"/>
             <TextView
                 android:id="@+id/model_textView"

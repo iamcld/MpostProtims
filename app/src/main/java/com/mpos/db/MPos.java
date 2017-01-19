@@ -3,7 +3,7 @@ package com.mpos.db;
 /**
  * Created by chenld on 2016/12/19.
  */
-public class MPos {
+public class MPos{
 
     private String mac;//设备地址，主键
     private String name;//设备名
