@@ -31,6 +31,7 @@ public class BtPairAdapter extends BaseAdapter{
     private Context context;
     private ArrayList<HashMap<String, String>> list;
 
+
     public BtPairAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<HashMap<String, String>>();
@@ -105,7 +106,7 @@ public class BtPairAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.bt_pair_item, null);
 
             vh = new ViewHodler();
-            vh.deviceImage = (ImageView) convertView.findViewById(R.id.bt_pair_device_image);
+            vh.device_Image = (ImageView) convertView.findViewById(R.id.bt_pair_device_image);
             vh.device_name_tv = (TextView) convertView.findViewById(R.id.bt_pair_device_name);
             vh.device_mac_tv = (TextView) convertView.findViewById(R.id.bt_pair_device_mac);
             vh.pair_button = (Button) convertView.findViewById(R.id.bt_pair_btn);
@@ -118,21 +119,26 @@ public class BtPairAdapter extends BaseAdapter{
         //vh.imageView.setImageResource(items.get("deviceImage"));
         vh.device_name_tv.setText(items.get(MposApplication.DEVICE_NAME));
         vh.device_mac_tv.setText(items.get(MposApplication.DEVICE_MAC));
-//        //imageView监听器
-//        vh.deviceImage.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                Toast.makeText(context, "imageView ", Toast.LENGTH_SHORT).show();
-//                intent.setClass(context, ShowDeviceInfoActivity.class);
-//
-//                context.startActivity(intent);
-//            }
-//        });
+        setImageResouse(items, vh);
+
         vh.pair_button.setOnClickListener(new PairButtonListener(context, position, list));
 
         return convertView;
+    }
+    private void setImageResouse(HashMap<String,String> items, ViewHodler vh){
+        boolean flag = false;
+        for (int i=0; i<MposApplication.deviceName.length; i++){
+            if (items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
+                vh.device_Image.setImageResource(MposApplication.img[i]);
+                flag = true;
+                break;
+            }
+        }
+
+        //设置默认图片
+        if (!flag){
+            vh.device_Image.setImageResource(MposApplication.img[4]);
+        }
     }
 
     private static class PairButtonListener implements View.OnClickListener {
@@ -191,7 +197,7 @@ public class BtPairAdapter extends BaseAdapter{
 
 
     private static class ViewHodler{
-        private ImageView deviceImage;
+        private ImageView device_Image;
         private TextView device_name_tv;
         private TextView device_mac_tv;
         private Button pair_button;

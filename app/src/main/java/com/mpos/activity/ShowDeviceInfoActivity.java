@@ -23,6 +23,9 @@ import com.mpos.db.MPos;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ShowDeviceInfoActivity extends Activity implements View.OnClickListener{
     private static final String TAG = "ShowDeviceInfoActivity";
@@ -34,6 +37,7 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
     private TextView tv_show_os_version;
     private TextView tv_show_boot_version;
     private TextView tv_show_battery_info;
+    private CircleImageView iv_avatar;
 
 
     @Override
@@ -62,6 +66,7 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
 
         imageView = (ImageView) findViewById(R.id.back_iv);
         button = (Button) findViewById(R.id.delete_bt);
+        iv_avatar = (CircleImageView) findViewById(R.id.iv_avatar);
         tv_show_pos_sn = (TextView) findViewById(R.id.tv_show_pos_sn);
         tv_show_pos_name = (TextView)findViewById(R.id.tv_show_pos_name);
         tv_show_pos_pn = (TextView)findViewById(R.id.tv_show_pos_pn);
@@ -77,18 +82,32 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
             tv_show_boot_version.setText(mPos.getBoot_version());
             tv_show_battery_info.setText(mPos.getBattery());
         }
-
+        setImageResouse(name);
 
         imageView.setOnClickListener(this);
         button.setOnClickListener(this);
     }
 
+    private void setImageResouse(String posName){
+        boolean flag = false;
+        for (int i=0; i<MposApplication.deviceName.length; i++){
+            if (posName.indexOf(MposApplication.deviceName[i]) != -1 ){
+                iv_avatar.setImageResource(MposApplication.img[i]);
+                flag = true;
+                break;
+            }
+        }
+
+        //设置默认图片
+        if (!flag){
+            iv_avatar.setImageResource(MposApplication.img[4]);
+        }
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.back_iv:
-                Toast.makeText(this,"back", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
             case R.id.delete_bt:

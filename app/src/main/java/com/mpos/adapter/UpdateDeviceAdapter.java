@@ -99,17 +99,17 @@ public class UpdateDeviceAdapter extends BaseAdapter{
             vh = (ViewHolder) convertView.getTag();
         }
 
-        HashMap<String, String> item = list.get(position);
+        HashMap<String, String> items = list.get(position);
         //vh.showArea.setTag(position);
         vh.newfun_btn.setTag(position);
 
-        vh.deviceName.setText(item.get(MposApplication.DEVICE_NAME));
-        vh.version.setText(item.get("version"));
-        vh.size.setText(item.get("size"));
-        vh.hideArea_tv1.setText(item.get("hideArea_tv1"));
-        vh.hideArea_tv2.setText(item.get("hideArea_tv2"));
-        vh.hideArea_tv3.setText(item.get("hideArea_tv3"));
-
+        vh.deviceName.setText(items.get(MposApplication.DEVICE_NAME));
+        vh.version.setText(items.get("version"));
+        vh.size.setText(items.get("size"));
+        vh.hideArea_tv1.setText(items.get("hideArea_tv1"));
+        vh.hideArea_tv2.setText(items.get("hideArea_tv2"));
+        vh.hideArea_tv3.setText(items.get("hideArea_tv3"));
+        setImageResouse(items, vh);
         //是否显示checkBox
         if(isShow){
             vh.update_checkBox.setVisibility(View.VISIBLE);
@@ -211,6 +211,22 @@ public class UpdateDeviceAdapter extends BaseAdapter{
         // 根据isSelected来设置checkbox的选中状况
         vh.update_checkBox.setChecked(getIsSelected().get(position));
         return convertView;
+    }
+
+    private void setImageResouse(HashMap<String,String> items, ViewHolder vh){
+        boolean flag = false;
+        for (int i=0; i<MposApplication.deviceName.length; i++){
+            if (items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
+                vh.img_devece.setImageResource(MposApplication.img[i]);
+                flag = true;
+                break;
+            }
+        }
+
+        //设置默认图片
+        if (!flag){
+            vh.img_devece.setImageResource(MposApplication.img[4]);
+        }
     }
 
     public static HashMap<Integer, Boolean> getIsSelected(){

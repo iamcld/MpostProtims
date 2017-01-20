@@ -59,6 +59,7 @@ public class DownloadActivity extends Activity {
      */
     private Handler handler = new UIHander();
 
+
     private final class UIHander extends Handler {
         public void handleMessage(Message msg) {
             Bundle bundle = msg.getData();

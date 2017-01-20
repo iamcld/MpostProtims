@@ -33,7 +33,6 @@ public class BtRepairAdapter extends BaseAdapter{
     private Context context;
     private ArrayList<HashMap<String, String>> list;
 
-
     public BtRepairAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<HashMap<String, String>>();
@@ -122,16 +121,6 @@ public class BtRepairAdapter extends BaseAdapter{
             vh = (ViewHodler) convertView.getTag();
         }
 
-//        vh.device_image.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                Toast.makeText(context, "imageView ", Toast.LENGTH_SHORT).show();
-//                intent.setClass(context, ShowDeviceInfoActivity.class);
-//                context.startActivity(intent);
-//            }
-//        });
-
         vh.repair_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,13 +131,29 @@ public class BtRepairAdapter extends BaseAdapter{
 
 
         HashMap<String,String> items = list.get(position);
-        //vh.device_image.setImageResource(items.get("deviceImage"));
         vh.device_name_tv.setText(items.get(MposApplication.DEVICE_NAME));
         vh.device_mac_tv.setText(items.get(MposApplication.DEVICE_MAC));
+        setImageResouse(items, vh);
 
         vh.repair_button.setOnClickListener(new RePairButtonListener(context, position, list));
 
         return convertView;
+    }
+
+    private void setImageResouse(HashMap<String,String> items, ViewHodler vh){
+        boolean flag = false;
+        for (int i=0; i<MposApplication.deviceName.length; i++){
+            if (items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
+                vh.device_image.setImageResource(MposApplication.img[i]);
+                flag = true;
+                break;
+            }
+        }
+
+        //设置默认图片
+        if (!flag){
+            vh.device_image.setImageResource(MposApplication.img[4]);
+        }
     }
 
 //    private static class ConvertViewListener implements View.OnClickListener{

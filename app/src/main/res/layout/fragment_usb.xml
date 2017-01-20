@@ -45,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="26dp"
         android:text="@string/addByUsb"
+        android:textColor="@drawable/selector_text_color"
         android:background="@drawable/selector_add"
         android:id="@+id/save_btn"/>
 

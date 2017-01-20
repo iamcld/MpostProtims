@@ -109,6 +109,7 @@
         android:layout_width="match_parent"
         android:layout_height="26dp"
         android:background="@drawable/selector_add"
-        android:text="@string/save1" />
+        android:text="@string/save1"
+        android:textColor="@drawable/selector_text_color"/>
 
 </LinearLayout>
