@@ -85,7 +85,6 @@ public class MyIntentService extends IntentService {
 //            handler.sendMessage(msg);
         }
 
-
         ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
         LogUtils.i("数据库更新后:" + mPoslist);
 
