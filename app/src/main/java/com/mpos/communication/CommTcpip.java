@@ -1,6 +1,5 @@
 package com.mpos.communication;
 
-import android.util.Log;
 
 import com.apkfuns.logutils.LogUtils;
 import com.pax.utils.Utils;

@@ -192,7 +192,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
     }
     //初始化更新列表数据
     private void initUpdataDataList(){
-        datasUpdate = new ArrayList<HashMap<String, String>>();
+        datasUpdate = new ArrayList<>();
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
         ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
 
@@ -224,7 +224,7 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
 
     //初始化无更新列表数据
     private void initNotUpdataDataList(){
-        datasNotUpdate = new ArrayList<HashMap<String, String>>();
+        datasNotUpdate = new ArrayList<>();
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
         ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
 

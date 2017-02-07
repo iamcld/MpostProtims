@@ -1,5 +1,6 @@
 package com.mpos.adapter;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apkfuns.logutils.LogUtils;
 import com.example.chenld.mpostprotimstest.R;
 import com.mpos.MposApplication;
 
@@ -34,7 +34,7 @@ public class BtPairAdapter extends BaseAdapter{
 
     public BtPairAdapter(Context context) {
         this.context = context;
-        this.list = new ArrayList<HashMap<String, String>>();
+        this.list = new ArrayList<>();
 
     }
 
@@ -72,7 +72,7 @@ public class BtPairAdapter extends BaseAdapter{
     //手动匹配时调用
     public void deleteDevice(ArrayList<HashMap<String, String>> deleteList){
 
-        LogUtils.i("删除列表:"+deleteList);
+        //LogUtils.i("删除列表:"+deleteList);
         for (int j = 0; j < deleteList.size(); j++) {
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).get(MposApplication.DEVICE_MAC).equals(deleteList.get(j).get(MposApplication.DEVICE_MAC))) {
@@ -98,6 +98,7 @@ public class BtPairAdapter extends BaseAdapter{
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHodler vh;
@@ -127,8 +128,11 @@ public class BtPairAdapter extends BaseAdapter{
     }
     private void setImageResouse(HashMap<String,String> items, ViewHodler vh){
         boolean flag = false;
+        //LogUtils.d("items:"+items);
         for (int i=0; i<MposApplication.deviceName.length; i++){
-            if (items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
+
+            if (items.get(MposApplication.DEVICE_NAME) != null &&
+                    items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
                 vh.device_Image.setImageResource(MposApplication.img[i]);
                 flag = true;
                 break;
@@ -144,7 +148,7 @@ public class BtPairAdapter extends BaseAdapter{
     private static class PairButtonListener implements View.OnClickListener {
         private Context context;
         private int position;
-        private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        private ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         public PairButtonListener(Context context, int position, ArrayList<HashMap<String, String>> list) {
             this.context = context;
@@ -181,11 +185,11 @@ public class BtPairAdapter extends BaseAdapter{
                         }
                     }
 
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (NoSuchMethodException  e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 }
             } else if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {

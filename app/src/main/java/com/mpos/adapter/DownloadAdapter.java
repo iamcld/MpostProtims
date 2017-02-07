@@ -1,5 +1,6 @@
 package com.mpos.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,7 @@ public class DownloadAdapter extends BaseAdapter {
     private Context context;
 
     public DownloadAdapter(Context context) {
-        datas = new ArrayList<UpdateModel>();
+        datas = new ArrayList<>();
         this.context = context;
     }
 
@@ -49,6 +50,7 @@ public class DownloadAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int pos, View convertView, ViewGroup viewGroup) {
         UpdateModel model = datas.get(pos);

@@ -1,11 +1,9 @@
 package com.mpos.adapter;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +45,7 @@ public class UpdateDeviceAdapter extends BaseAdapter{
         this.context = context;
         this.list = list;
         this.isShow = isShow;
-        isSelected = new HashMap<Integer,Boolean>();
+        isSelected = new HashMap<>();
         this.mSwitch = mSwitch;
         // 初始化数据
         initDate();
@@ -74,6 +72,7 @@ public class UpdateDeviceAdapter extends BaseAdapter{
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder vh;
@@ -134,7 +133,7 @@ public class UpdateDeviceAdapter extends BaseAdapter{
                         }else {
                             Toast.makeText(context,"Toast...",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(context, DownloadActivity.class);
-                            ArrayList<String> updateDeviceList = new ArrayList<String>();
+                            ArrayList<String> updateDeviceList = new ArrayList<>();
                             //intent.putStringArrayListExtra("devices", list);
                             //intent.putParcelableArrayListExtra("devices", (ArrayList<? extends Parcelable>) list);
 //                        intent.putExtra(MposApplication.DEVICE_MAC, list.get(position).get(MposApplication.DEVICE_MAC));
@@ -216,7 +215,7 @@ public class UpdateDeviceAdapter extends BaseAdapter{
     private void setImageResouse(HashMap<String,String> items, ViewHolder vh){
         boolean flag = false;
         for (int i=0; i<MposApplication.deviceName.length; i++){
-            if (items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
+            if (items.get(MposApplication.DEVICE_NAME).contains(MposApplication.deviceName[i])){
                 vh.img_devece.setImageResource(MposApplication.img[i]);
                 flag = true;
                 break;

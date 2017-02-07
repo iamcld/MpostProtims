@@ -82,7 +82,7 @@ public class DatabaseAdapter {
         Cursor c = db.rawQuery(sql,null);
 
         ArrayList<MPos> mposList = new ArrayList<>();
-        MPos mpos = null;
+        MPos mpos;
         while (c.moveToNext()){
             mpos = new MPos();
             mpos.setMac(c.getString(c.getColumnIndexOrThrow(MPosMetaData.MPosTable._MAC)));

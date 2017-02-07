@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.chenld.mpostprotimstest.com.mpos.DeviceFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,69 +12,77 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
-            android:id="@+id/state_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="WIFI已经连接"
-            android:textColor="#ff002f"
-            android:paddingTop="10dp"/>
+                android:id="@+id/state_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:textColor="#ff002f"
+                tools:text="WIFI已经连接" />
+
             <ImageView
                 android:id="@+id/state_imageView"
-                android:layout_below="@+id/state_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/state_textView"
+                android:paddingTop="10dp"
                 android:src="@drawable/d180"
-                android:paddingTop="10dp"/>
+                tools:ignore="ContentDescription" />
+
             <TextView
                 android:id="@+id/model_textView"
-                android:layout_toRightOf="@+id/state_imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="型号:D180"
-                android:paddingTop="35dp"/>
+                android:layout_toRightOf="@+id/state_imageView"
+                android:paddingTop="35dp"
+                tools:text="型号:D180" />
+
             <TextView
                 android:id="@+id/sn_textView"
-                android:text="sn:13140000"
-                android:layout_toRightOf="@+id/state_imageView"
-                android:layout_below="@+id/model_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="15dp"/>
+                android:layout_below="@+id/model_textView"
+                android:layout_toRightOf="@+id/state_imageView"
+                android:paddingTop="15dp"
+                tools:text="sn:13140000" />
+
             <TextView
                 android:id="@+id/osversion_textView"
-                android:text="OS版本:1.0.0"
-                android:layout_toRightOf="@+id/state_imageView"
-                android:layout_below="@+id/sn_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="15dp"/>
+                android:layout_below="@+id/sn_textView"
+                android:layout_toRightOf="@+id/state_imageView"
+                android:paddingTop="15dp"
+                tools:text="OS版本:1.0.0" />
+
             <TextView
                 android:id="@+id/location_textView"
-                android:text="BOOT版本:1.1.2"
-                android:layout_toRightOf="@+id/state_imageView"
-                android:layout_below="@+id/osversion_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="15dp"/>
+                android:layout_below="@+id/osversion_textView"
+                android:layout_toRightOf="@+id/state_imageView"
+                android:paddingTop="15dp"
+                tools:text="BOOT版本:1.1.2" />
+
             <TextView
                 android:id="@+id/charge_textView"
-                android:text="电量信息: "
-                android:layout_toRightOf="@+id/state_imageView"
-                android:layout_below="@+id/location_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/location_textView"
+                android:layout_toRightOf="@+id/state_imageView"
                 android:drawableRight="@drawable/icon_battery_100"
-                android:paddingTop="15dp"/>
+                android:paddingTop="15dp"
+                tools:text="电量信息: " />
 
 
             <Button
                 android:id="@+id/update_button"
                 android:layout_width="44dp"
                 android:layout_height="24dp"
-                android:background="@drawable/update_btn"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="80dp"/>
+                android:layout_marginTop="80dp"
+                android:background="@drawable/update_btn" />
 
         </RelativeLayout>
     </LinearLayout>
@@ -83,8 +90,7 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dip"
-        android:background="@color/blue">
-    </View>
+        android:background="@color/blue"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,27 +110,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="100dp">
+
             <Button
+                android:id="@+id/addDevice_button"
                 android:layout_width="0dp"
                 android:layout_height="26dp"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:text="@string/addDevice"
-                android:id="@+id/addDevice_button"
                 android:background="@drawable/selector_add"
-                android:layout_gravity="bottom" />
+                android:text="@string/addDevice" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/deviceList_button"
                 android:layout_width="0dp"
                 android:layout_height="26dp"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:text="@string/deviceList"
-                android:id="@+id/deviceList_button"
                 android:background="@drawable/selector_add"
-                android:layout_gravity="bottom" />
+                android:text="@string/deviceList" />
         </LinearLayout>
 
     </LinearLayout>

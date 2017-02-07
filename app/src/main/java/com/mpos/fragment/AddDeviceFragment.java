@@ -1,6 +1,7 @@
 package com.mpos.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -48,6 +48,7 @@ public class AddDeviceFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
+
     private void initView(View view){
         mLayoutInflater = LayoutInflater.from(getContext());
         //找到TabHost
@@ -71,8 +72,7 @@ public class AddDeviceFragment extends Fragment implements View.OnClickListener{
 
     private View getTabItemView(int index){
 
-        View view = mLayoutInflater.inflate(R.layout.tab_item_comm_view, null);
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageView_tab_host);
+        @SuppressLint("InflateParams") View view = mLayoutInflater.inflate(R.layout.tab_item_comm_view, null);
         TextView textView = (TextView) view.findViewById(R.id.tab_host_tv);
         textView.setText(mTextArry[index]);
 

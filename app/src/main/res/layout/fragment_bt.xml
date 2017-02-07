@@ -21,12 +21,14 @@
             android:id="@+id/search_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/search_btn"/>
+            android:background="@drawable/search_btn"
+            tools:ignore="ContentDescription" />
         <ImageButton
             android:id="@+id/stop_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/stop_btn"/>
+            android:background="@drawable/stop_btn"
+            tools:ignore="ContentDescription" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"

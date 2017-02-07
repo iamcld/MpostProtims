@@ -5,23 +5,17 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.widget.Toast;
+
 
 import com.apkfuns.logutils.LogUtils;
 import com.mpos.adapter.BtPairAdapter;
 import com.mpos.adapter.BtRepairAdapter;
-import com.mpos.communication.CommBluetooth;
-import com.mpos.communication.CommTcpip;
-import com.mpos.communication.ICommunicator;
-import com.mpos.db.DatabaseAdapter;
-import com.mpos.db.MPos;
-import com.mpos.sdk.MposSDK;;
-import com.pax.utils.Utils;
+
+import com.paxsz.easylink.api.EasyLinkSdkManager;
+import com.paxsz.easylink.cmd.DeviceInfo;
+import com.paxsz.easylink.listener.CloseDeviceListener;
+import com.paxsz.easylink.listener.OpenDeviceListener;
+import com.paxsz.easylink.listener.SwitchCommModeListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +28,8 @@ public class BluetoothReceiver extends BroadcastReceiver {
     private BtPairAdapter btPairAdapter;
     private BtRepairAdapter btRepairAdapter;
     private BluetoothAdapter btAdapter;//蓝牙适配器
-//    private MyHandler mHandler;
+    //    private MyHandler mHandler;
+    private EasyLinkSdkManager mEasyLinkSdkManager;
 
 
     public BluetoothReceiver() {
@@ -46,6 +41,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
         this.btPairAdapter = btPairAdapter;
         this.btRepairAdapter = btRepairAdapter;
         this.btAdapter = btAdapter;
+        this.mEasyLinkSdkManager = EasyLinkSdkManager.getInstance(context);
     }
 
     @Override
@@ -59,7 +55,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
             //Toast.makeText(context,"发现蓝牙设备", Toast.LENGTH_SHORT).show();
             if (devices.getBondState() != BluetoothDevice.BOND_BONDED) {
                 //未匹配设备
-                HashMap<String, String> items = new HashMap<String, String>();
+                HashMap<String, String> items = new HashMap<>();
                 //如果不是重复的mac地址，则可判断为新的蓝牙设备
                 items.put(MposApplication.DEVICE_NAME, devices.getName());
                 items.put(MposApplication.DEVICE_MAC, devices.getAddress());
@@ -80,7 +76,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
             if (devices.getBondState() == BluetoothDevice.BOND_BONDED) {
                 Set<BluetoothDevice> set = btAdapter.getBondedDevices();//获得已配对蓝牙设备集合
                 //ArrayList<String> deleteList = new ArrayList<>();
-                ArrayList<HashMap<String, String>> deleteList = new ArrayList<HashMap<String, String>>();
+                ArrayList<HashMap<String, String>> deleteList = new ArrayList<>();
 
                 //显示已经配对过的设备,
                 deleteList = btRepairAdapter.addDevice(set);
@@ -89,6 +85,14 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 //通知listView数据改变，更新显示列表
                 btRepairAdapter.notifyDataSetChanged();
                 btPairAdapter.notifyDataSetChanged();
+
+
+                //调用EasylinkSdk，打开旧协议
+                for (int i = 0; i < deleteList.size(); i++) {
+                    Thread thread = new Thread(new SwitchCommModeRunnable(mEasyLinkSdkManager,
+                            deleteList.get(i).get(MposApplication.DEVICE_NAME),
+                            deleteList.get(i).get(MposApplication.DEVICE_MAC)));
+                    thread.start();
 
 //                for (int i = 0; i < deleteList.size(); i++) {
 //                    LogUtils.d("i: " + i);
@@ -112,24 +116,79 @@ public class BluetoothReceiver extends BroadcastReceiver {
 //                            deleteList.get(i).get(MposApplication.DEVICE_NAME), mHandler);
 //                    myThread.start();
 //                }
-            }
-        } else if (action.equals(MposApplication.RECEIVER_ACTION)) {
-            //自定义广播:蓝牙自动匹配
-            String mac = intent.getStringExtra(MposApplication.DEVICE_MAC);
-            String name = intent.getStringExtra(MposApplication.DEVICE_NAME);
+                }
+            } else if (action.equals(MposApplication.RECEIVER_ACTION)) {
+                //自定义广播:蓝牙自动匹配
+                String mac = intent.getStringExtra(MposApplication.DEVICE_MAC);
+                //String name = intent.getStringExtra(MposApplication.DEVICE_NAME);
 //            this.mHandler = new MyHandler(context, mac, name);
-            Set<BluetoothDevice> set = btAdapter.getBondedDevices();//获得已配对蓝牙设备集合
+                Set<BluetoothDevice> set = btAdapter.getBondedDevices();//获得已配对蓝牙设备集合
 
-            //显示已经配对过的设备
-            btRepairAdapter.addDevice(set);
-            btPairAdapter.deleteDevice(mac);
+                //显示已经配对过的设备
+                btRepairAdapter.addDevice(set);
+                btPairAdapter.deleteDevice(mac);
 
-            //通知listView数据改变，更新显示列表
-            btRepairAdapter.notifyDataSetChanged();
-            btPairAdapter.notifyDataSetChanged();
-            LogUtils.i( "匹配的地址" + mac);
+                //通知listView数据改变，更新显示列表
+                btRepairAdapter.notifyDataSetChanged();
+                btPairAdapter.notifyDataSetChanged();
+                LogUtils.i("匹配的地址" + mac);
+            }
+        }
+
+    }
+
+    private static class SwitchCommModeRunnable implements Runnable{
+        private EasyLinkSdkManager mEasyLinkSdkManager;
+        private String mac;
+        private String name;
+
+        public SwitchCommModeRunnable(EasyLinkSdkManager mEasyLinkSdkManager, String name, String mac) {
+            this.mEasyLinkSdkManager = mEasyLinkSdkManager;
+            this.name = name;
+            this.mac = mac;
+        }
+
+        @Override
+        public void run() {
+            DeviceInfo deviceInfo = new DeviceInfo(name, mac);
+            mEasyLinkSdkManager.connect(deviceInfo, new OpenDeviceListener() {
+                @Override
+                public void openSucc() {
+                    LogUtils.d("connect success");
+                    //连接成功
+                    mEasyLinkSdkManager.switchCommMode(0x1, new SwitchCommModeListener() {
+                        @Override
+                        public void onSucc() {
+                            mEasyLinkSdkManager.disconnect(new CloseDeviceListener() {
+                                @Override
+                                public void closeSucc() {
+                                    LogUtils.e("disconnect success");
+                                }
+
+                                @Override
+                                public void onError(int code, String errDesc) {
+                                    LogUtils.e("disconnect error, code="+code);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError(int code, String errDesc) {
+                            LogUtils.e("switchCommMode error, code="+code);
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(int code, String errDesc) {
+                    LogUtils.e("connect error,code="+code);
+                    LogUtils.e("connect error,errDesc="+errDesc);
+                    System.out.print("errDesc"+errDesc);
+                }
+            });
         }
     }
+
 
 //    private static class MyThread extends Thread {
 //        private Context context;

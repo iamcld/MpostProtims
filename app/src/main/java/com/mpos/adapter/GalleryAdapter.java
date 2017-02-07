@@ -1,5 +1,6 @@
 package com.mpos.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -84,6 +85,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     /**
      * 设置值,绑定数据到RecyclerView
      */
+    @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mImg.setImageResource(mDatas.get(position));

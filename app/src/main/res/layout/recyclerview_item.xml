@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="120dp"
     android:layout_height="120dp"
     android:background="@drawable/item_bg">
@@ -11,7 +12,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="5dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/recycleview_item_text"
@@ -22,7 +24,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:textColor="#ff0000"
-        android:text="some info"
-        android:textSize="12dp" />
+        tools:text="some info"
+        android:textSize="12sp" />
 
 </RelativeLayout>

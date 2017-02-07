@@ -59,7 +59,7 @@ import java.util.ArrayList;
  */
 public class FragmentTabHost extends TabHost implements
 		TabHost.OnTabChangeListener {
-	private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+	private final ArrayList<TabInfo> mTabs = new ArrayList<>();
 	private FrameLayout mRealTabContent;
 	private Context mContext;
 	private FragmentManager mFragmentManager;

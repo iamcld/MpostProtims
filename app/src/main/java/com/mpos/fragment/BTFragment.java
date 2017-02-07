@@ -17,7 +17,6 @@ import com.mpos.BluetoothReceiver;
 import com.mpos.MposApplication;
 import com.mpos.adapter.BtPairAdapter;
 import com.mpos.adapter.BtRepairAdapter;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +36,7 @@ public class BTFragment extends Fragment implements View.OnClickListener {
     private BtPairAdapter btPairAdapter;
     private BtRepairAdapter btRepairAdapter;
     private BluetoothAdapter btAdapter;//蓝牙适配器
-    ArrayList<HashMap<String,String>> datas = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String,String>> datas = new ArrayList<>();
     private BluetoothReceiver mBluetoothReceiver;
 
     public BTFragment() {

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
@@ -22,7 +20,6 @@ import com.mpos.MposApplication;
 import com.mpos.db.DatabaseAdapter;
 import com.mpos.sdk.MposSDK;
 import com.mpos.UpdateModel;
-import com.pax.utils.MyLog;
 import com.mpos.adapter.DownloadAdapter;
 import com.mpos.communication.CommBluetooth;
 import com.mpos.communication.CommTcpip;
@@ -97,10 +94,11 @@ public class DownloadActivity extends Activity {
 
                             LogUtils.d("vh.textView:"+mac);
                             LogUtils.d("btMac:"+btMac);
+                            assert btMac != null;
                             int flag = mac.indexOf(btMac);
                             LogUtils.d("flag="+flag);
 
-                            if (mac.indexOf(btMac) != -1){
+                            if (mac.contains(btMac)){
                                 //vh.progressBar.setProgress(progresses.get(btScannedDevs.get(i).getAddress()));
                                 vh.progressBar.setProgress(value);
                                 vh.value.setText("" + value + "%");
@@ -154,8 +152,8 @@ public class DownloadActivity extends Activity {
             Toast.makeText(getApplicationContext(), R.string.no_devices_error, Toast.LENGTH_SHORT).show();
             return;
         }
-        statuses = new HashMap<String, Integer>();
-        progresses = new HashMap<String, Integer>();
+        statuses = new HashMap<>();
+        progresses = new HashMap<>();
         listview = (ListView) findViewById(R.id.listview);
         adapter = new DownloadAdapter(this);
 
@@ -179,8 +177,8 @@ public class DownloadActivity extends Activity {
 
         listview.setAdapter(adapter);
 
-        loaders = new ArrayList<MposSDK>();
-        btScannedDevs = new ArrayList<BluetoothDevice>();
+        loaders = new ArrayList<>();
+        btScannedDevs = new ArrayList<>();
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
         for (String s : devices) {
@@ -502,7 +500,7 @@ public class DownloadActivity extends Activity {
             }
 
             int iRet = 0;
-            iRet = loader.initEnv();
+            loader.initEnv();
             iRet = loader.download();
             LogUtils.d("loader.download return:"+iRet);
             commTcpip.close();

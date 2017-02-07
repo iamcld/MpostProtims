@@ -26,11 +26,8 @@ import android.widget.Toast;
 import com.apkfuns.logutils.LogUtils;
 import com.example.chenld.mpostprotimstest.R;
 import com.mpos.MposApplication;
-import com.mpos.MyIntentService;
-import com.mpos.MyService;
 import com.mpos.activity.DownloadActivity;
 import com.mpos.activity.ServerSetActivity;
-import com.mpos.activity.ShowDeviceInfoActivity;
 import com.mpos.adapter.NotUpdateDeviceAdapter;
 import com.mpos.adapter.UpdateDeviceAdapter;
 import com.mpos.communication.CommBluetooth;
@@ -281,7 +278,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
+        //Intent intent = new Intent();
         Message msg = Message.obtain();
         switch (v.getId()) {
             case R.id.add_ImgBtn:
@@ -364,7 +361,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
 
     public void getDataFromDB() {
         databaseAdapter = new DatabaseAdapter(getContext());
-        mPoslist = new ArrayList<MPos>();
+        mPoslist = new ArrayList<>();
         mPoslist = databaseAdapter.rawFindAll();
         LogUtils.i("mPoslist" + mPoslist);
     }
@@ -413,10 +410,9 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
             }
 
             String sn = mPoslist.get(i).getSn();
-            LogUtils.d("sn is null"+sn);
+            LogUtils.d("sn is :"+sn);
             //sn为空的设备，连接蓝牙获取sn
             if ( sn == null) {
-                LogUtils.d("sn is null two"+sn);
                 Thread btThread = new Thread(new BtRunnable(getContext(), mPoslist.get(i), handler));
                 btThread.start();
 
@@ -445,7 +441,6 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
             String key_tid;
             CommTcpip commTcpip;
             MposSDK mposSDK;
-            MPos mPos;
             int isupdate = 0;
             DatabaseAdapter databaseAdapter;
             LogUtils.d("当前线程:" + Thread.currentThread());
@@ -517,7 +512,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
         public void run() {
             byte[] termVerInfo = new byte[8 + 1];
             byte[] termSN = new byte[8 + 1];
-            byte[] terminalInfo = new byte[30 + 1];
+            //byte[] terminalInfo = new byte[30 + 1];
             CommBluetooth commBluetooth;
             MposSDK mposSDK;
             MPos mPos;
@@ -578,7 +573,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
 
     //初始化更新列表数据
     private void initUpdataDataList() {
-        datasUpdate = new ArrayList<HashMap<String, String>>();
+        datasUpdate = new ArrayList<>();
 
         for (int i = 0; i < mPoslist.size(); i++) {
             HashMap<String, String> items = new HashMap<>();
@@ -600,7 +595,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
 
     //初始化无更新列表数据
     private void initNotUpdataDataList() {
-        datasNotUpdate = new ArrayList<HashMap<String, String>>();
+        datasNotUpdate = new ArrayList<>();
 
         for (int i = 0; i < mPoslist.size(); i++) {
             HashMap<String, String> items = new HashMap<>();

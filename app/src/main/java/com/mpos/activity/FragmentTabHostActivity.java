@@ -1,5 +1,6 @@
 package com.mpos.activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
@@ -85,7 +86,7 @@ public class FragmentTabHostActivity extends FragmentActivity {
 
     private View getTabItemView(int index){
 
-        View view = mLayoutInflater.inflate(R.layout.tab_item_view, null);
+        @SuppressLint("InflateParams") View view = mLayoutInflater.inflate(R.layout.tab_item_view, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView_tab_host);
         imageView.setImageResource(mImageArray[index]);
         TextView textView = (TextView) view.findViewById(R.id.tab_textview);

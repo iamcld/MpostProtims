@@ -1,5 +1,6 @@
 package com.mpos.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import java.util.List;
  * 1、当启动一个子类activity时，就会调用父类中onCreate的 ActivityCollector.addActivity(this);
  */
 
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
     @Override

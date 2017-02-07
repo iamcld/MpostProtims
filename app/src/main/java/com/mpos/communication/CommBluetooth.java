@@ -3,10 +3,7 @@ package com.mpos.communication;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 
 import com.apkfuns.logutils.LogUtils;
 import com.pax.utils.Utils;
@@ -152,7 +149,7 @@ public class CommBluetooth implements ICommunicator{
             btReadThread.start();
         }
         int totalLen = 0;
-        int cLen = 0;
+        int cLen;
         //long end = System.currentTimeMillis() + RECV_TIMEOUT_DEFAULT;
 
         //cld test

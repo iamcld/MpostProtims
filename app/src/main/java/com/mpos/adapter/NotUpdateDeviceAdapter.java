@@ -1,5 +1,6 @@
 package com.mpos.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -36,8 +37,7 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
         this.context = context;
         this.list = list;
         this.isShow = isShow;
-        isSelected = new HashMap<Integer, Boolean>();//isSelected对象创建
-        // 初始化数据
+        isSelected = new HashMap<>();
         initDate();
     }
 
@@ -62,6 +62,7 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder vh;
@@ -138,7 +139,7 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
     private void setImageResouse(HashMap<String,String> items, ViewHolder vh){
         boolean flag = false;
         for (int i=0; i<MposApplication.deviceName.length; i++){
-            if (items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
+            if (items.get(MposApplication.DEVICE_NAME).contains(MposApplication.deviceName[i])){
                 vh.not_img_devece.setImageResource(MposApplication.img[i]);
                 flag = true;
                 break;
@@ -185,7 +186,7 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
     private static class ImageClickListener implements View.OnClickListener{
         private Context context;
         private int position;
-        private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        private ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         public ImageClickListener(Context context, ArrayList<HashMap<String, String>> list, int position) {
             this.context = context;

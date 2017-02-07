@@ -1,5 +1,6 @@
 package com.pax.utils;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -117,11 +118,11 @@ public class Utils {
 		if (offset > bytes.length || offset + len > bytes.length) {
 			return "";
 		}
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < len; i ++) {
 			sb.append(Integer.toHexString(bytes[i + offset] | 0xFFFFFF00).substring(6));
-			if (((i + 1) % 16) == 0) {
-			}
+//			if (((i + 1) % 16) == 0) {
+//			}
 		}
 		return sb.toString();
 	}
@@ -130,10 +131,10 @@ public class Utils {
 		if (offset > bytes.length || offset + len > bytes.length) {
 			return;
 		}
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < len; i ++) {
 			if ((i % 16) == 0) {
-				sb.append(((i / 16)+1) + ". ");
+				sb.append((i / 16) + 1).append(". ");
 			}
 			sb.append(Integer.toHexString(bytes[i + offset] | 0xFFFFFF00).substring(6));
 			sb.append(" ");
@@ -148,7 +149,7 @@ public class Utils {
 		if (offset > bytes.length || offset + len > bytes.length) {
 			return "";
 		}
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("\n");
 		for (int i = 0; i < len; i ++) {
 			sb.append(Integer.toHexString(bytes[i + offset] | 0xFFFFFF00).substring(6));
@@ -169,7 +170,7 @@ public class Utils {
 	}
 
 	public static String bcd2Str(byte[] bytes){
-	    StringBuffer temp=new StringBuffer(bytes.length*2);
+	    StringBuilder temp=new StringBuilder(bytes.length*2);
 	    for(int i=0;i<bytes.length;i++){
 	    	byte left = (byte)((bytes[i] & 0xf0)>>>4);
 	    	byte right = (byte)(bytes[i] & 0x0f);
@@ -179,14 +180,14 @@ public class Utils {
 	    	} else {
 	    		left += '0';
 	    	}
-	    	
+
 	    	if (right >= 0x0a && right <= 0x0f) {
 	    		right -= 0x0a;
 	    		right += 'A';
 	    	} else {
 	    		right += '0';
 	    	}
-	    	
+
 	    	temp.append(String.format("%c", left));
 	    	temp.append(String.format("%c", right));
 	    }
@@ -338,6 +339,7 @@ public class Utils {
 			}
 		}
 		
+		@SuppressLint("DefaultLocale")
 		public synchronized int write(byte[] data, int len) {
 			int[] status = statusForWrite();
 			int realLen = len;

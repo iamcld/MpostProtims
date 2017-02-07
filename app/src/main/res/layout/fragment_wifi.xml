@@ -1,8 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.chenld.mpostprotimstest.com.mpos.USBFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:ems="15"
-            android:hint="请输入IP值"
+            android:hint="@string/hintip"
             android:digits="0123456789."/>
     </LinearLayout>
 
@@ -34,7 +32,7 @@
         <EditText
             android:id="@+id/baudrate_edit"
             android:layout_width="0dip"
-            android:hint="请输入Port值"
+            android:hint="@string/hintport"
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:ems="10"

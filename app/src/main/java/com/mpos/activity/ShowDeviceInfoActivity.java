@@ -23,7 +23,6 @@ import com.mpos.db.MPos;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,13 +52,12 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
     public void initView(){
         String mac = getIntent().getStringExtra(MposApplication.DEVICE_MAC);
         String name = getIntent().getStringExtra(MposApplication.DEVICE_NAME);
-        ArrayList<MPos> mposList = new ArrayList<>();
+        ArrayList<MPos> mposList;
 
         LogUtils.d("mac:"+mac);
         LogUtils.d("name:"+name);
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(this);
-        MPos mPos = new MPos();
-        mPos = databaseAdapter.rawFindById(mac);
+        MPos mPos = databaseAdapter.rawFindById(mac);
         LogUtils.d("mPos:"+mPos);
         mposList = databaseAdapter.rawFindAll();
         LogUtils.d("数据库中所有记录:"+mposList);
@@ -91,7 +89,7 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
     private void setImageResouse(String posName){
         boolean flag = false;
         for (int i=0; i<MposApplication.deviceName.length; i++){
-            if (posName.indexOf(MposApplication.deviceName[i]) != -1 ){
+            if (posName.contains(MposApplication.deviceName[i])){
                 iv_avatar.setImageResource(MposApplication.img[i]);
                 flag = true;
                 break;

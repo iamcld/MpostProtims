@@ -1,15 +1,11 @@
 package com.mpos;
 
 import android.app.IntentService;
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Message;
 
 import com.apkfuns.logutils.LogUtils;
-import com.mpos.activity.ServerSetActivity;
 import com.mpos.communication.CommBluetooth;
-import com.mpos.communication.CommTcpip;
 import com.mpos.db.DatabaseAdapter;
 import com.mpos.db.MPos;
 import com.mpos.sdk.MposSDK;

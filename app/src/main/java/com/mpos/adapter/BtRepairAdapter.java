@@ -1,10 +1,9 @@
 package com.mpos.adapter;
 
-import android.bluetooth.BluetoothAdapter;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +34,14 @@ public class BtRepairAdapter extends BaseAdapter{
 
     public BtRepairAdapter(Context context) {
         this.context = context;
-        this.list = new ArrayList<HashMap<String, String>>();
+        this.list = new ArrayList<>();
     }
 
     //动态添加已经匹配到的蓝牙设备
     public ArrayList<HashMap<String, String>> addDevice(Set<BluetoothDevice> devices){
         boolean flag;
         //ArrayList<String> resultList = new ArrayList<String>();
-        ArrayList<HashMap<String, String>> deleteResult = new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String, String>> deleteResult = new ArrayList<>();
         HashMap<String,String> hm;
         if(devices == null){
             return null;
@@ -56,7 +55,7 @@ public class BtRepairAdapter extends BaseAdapter{
                 }
             }
             if (!flag){
-                hm = new HashMap<String, String>();
+                hm = new HashMap<>();
                 hm.put(MposApplication.DEVICE_NAME, bd.getName());
                 hm.put(MposApplication.DEVICE_MAC, bd.getAddress());
                 insertDataToDatabase( bd.getAddress(), bd.getName());//插入到数据库中
@@ -73,8 +72,7 @@ public class BtRepairAdapter extends BaseAdapter{
     //将内容插入到数据库中
     public void insertDataToDatabase(String mac, String name){
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(context);
-        MPos mPosOld = new MPos();
-        mPosOld = databaseAdapter.rawFindById(mac);
+        MPos mPosOld = databaseAdapter.rawFindById(mac);
         //如果数据库中没有，则插入
         if (mPosOld == null){
             LogUtils.i("数据库中没有相同的记录，插入新数据");
@@ -86,7 +84,6 @@ public class BtRepairAdapter extends BaseAdapter{
     //数据库中
     public void findDatafromDatabase(){
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(context);;
-        ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
     }
 
     @Override
@@ -104,6 +101,7 @@ public class BtRepairAdapter extends BaseAdapter{
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHodler vh;
@@ -143,7 +141,7 @@ public class BtRepairAdapter extends BaseAdapter{
     private void setImageResouse(HashMap<String,String> items, ViewHodler vh){
         boolean flag = false;
         for (int i=0; i<MposApplication.deviceName.length; i++){
-            if (items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
+            if (items.get(MposApplication.DEVICE_NAME).contains(MposApplication.deviceName[i])){
                 vh.device_image.setImageResource(MposApplication.img[i]);
                 flag = true;
                 break;
@@ -178,7 +176,7 @@ public class BtRepairAdapter extends BaseAdapter{
     private static class RePairButtonListener implements View.OnClickListener {
         private Context context;
         private int position;
-        private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        private ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         public RePairButtonListener(Context context, int position, ArrayList<HashMap<String, String>> list) {
             this.context = context;

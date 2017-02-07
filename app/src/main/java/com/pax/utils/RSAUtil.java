@@ -40,7 +40,7 @@ public class RSAUtil {
         KeyPair keyPair = keyPairGen.generateKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        Map<String, Object> keyMap = new HashMap<String, Object>(2);
+        Map<String, Object> keyMap = new HashMap<>(2);
         keyMap.put(PUBLIC_KEY, publicKey);
         keyMap.put(PRIVATE_KEY, privateKey);
         return keyMap;
@@ -232,17 +232,17 @@ public class RSAUtil {
         StringBuilder stringBuilder = new StringBuilder("");
         if (src == null || src.length <= 0) {  
             return null;  
-        }  
-        for (int i = 0; i < src.length; i++) {  
-            int v = src[i] & 0xFF;  
+        }
+        for (int i = 0; i < src.length; i++) {
+            int v = src[i] & 0xFF;
             String hv = Integer.toHexString(v);
             if (hv.length() == 0){
             	stringBuilder.append("00");
             }
             else{
-            	if (hv.length() < 2) {  
-                stringBuilder.append('0');  
-            	}  
+            	if (hv.length() < 2) {
+                stringBuilder.append('0');
+            	}
             	stringBuilder.append(hv);
             }
         }  

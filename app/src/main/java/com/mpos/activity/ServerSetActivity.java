@@ -3,7 +3,6 @@ package com.mpos.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.apkfuns.logutils.LogUtils;
 import com.example.chenld.mpostprotimstest.R;
 import com.pax.utils.Utils;
 
@@ -47,9 +47,9 @@ public class ServerSetActivity extends Activity implements View.OnClickListener,
         tid_edit = (EditText) findViewById(R.id.tid_edit);
         aSwitch = (Switch) findViewById(R.id.aSwitch);
 
-        serverip_edit.setText("192.168.1.1");
-        serverport_edit.setText("9999");
-        tid_edit.setText("00000000");
+        serverip_edit.setText(getResources().getString(R.string.defaultIp));
+        serverport_edit.setText(getResources().getString(R.string.defaultPort));
+        tid_edit.setText(getResources().getString(R.string.defaultTid));
 
         aSwitch.setOnCheckedChangeListener(this);
         imageView.setOnClickListener(this);
@@ -82,7 +82,6 @@ public class ServerSetActivity extends Activity implements View.OnClickListener,
                 finish();
                 break;
             case R.id.save_btn:
-                Toast.makeText(this,"save", Toast.LENGTH_SHORT).show();
                 String server_ip = serverip_edit.getText().toString();
                 String server_port = serverport_edit.getText().toString();
                 String tid = tid_edit.getText().toString();
@@ -96,7 +95,8 @@ public class ServerSetActivity extends Activity implements View.OnClickListener,
                     serverport_edit.setText("");
                     return;
                 }
-                if (tid == null){
+                LogUtils.d("tid is:");
+                if (tid == null || tid.length() <= 0){
                     Toast.makeText(this, "TID不允许为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -108,8 +108,10 @@ public class ServerSetActivity extends Activity implements View.OnClickListener,
                 editor.putString(KEY_SERVER_PORT, server_port);
                 editor.putString(KEY_TID, tid);
                 editor.putBoolean(KEY_SWITCH_STATE, swtichState);
-                editor.commit();
-
+                //editor.commit();
+                editor.apply();
+                Toast.makeText(this,"save successful", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             default:
                 break;

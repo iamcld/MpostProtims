@@ -37,4 +37,13 @@ public class UpdateModel {
     public void setProgress(int progress) {
         this.progress = progress;
     }
+
+    @Override
+    public String toString() {
+        return "UpdateModel{" +
+                "btDevName='" + btDevName + '\'' +
+                ", btDevMac='" + btDevMac + '\'' +
+                ", progress=" + progress +
+                '}';
+    }
 }

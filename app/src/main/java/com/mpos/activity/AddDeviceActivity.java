@@ -1,6 +1,7 @@
 package com.mpos.activity;
 
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.FragmentActivity;
 //import android.support.v4.app.FragmentTabHost;
 import com.example.chenld.mpostprotimstest.R;
@@ -13,7 +14,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -64,8 +64,7 @@ public class AddDeviceActivity extends FragmentActivity implements View.OnClickL
 
     private View getTabItemView(int index){
 
-        View view = mLayoutInflater.inflate(R.layout.tab_item_comm_view, null);
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageView_tab_host);
+        @SuppressLint("InflateParams") View view = mLayoutInflater.inflate(R.layout.tab_item_comm_view, null);
         TextView textView = (TextView) view.findViewById(R.id.tab_host_tv);
         textView.setText(mTextArry[index]);
 

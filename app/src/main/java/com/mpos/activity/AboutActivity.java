@@ -1,11 +1,9 @@
 package com.mpos.activity;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
 
 import com.example.chenld.mpostprotimstest.R;
 

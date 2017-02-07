@@ -43,6 +43,14 @@
     <string name="wifiIp">IP:</string>
     <string name="wifiPort">Port</string>
     <string name="wifiDevice">通过WIFI已经配对过的终端</string>
+    <string name="hintcomm">请输入COMM值</string>
+    <string name="hintip">请输入IP值</string>
+    <string name="hintbaudrate">请输入BaudRate值</string>
+    <string name="hintport">请输入Port值</string>
+    <string name="newfun">新功能</string>
+    <string name="defaultIp">192.168.1.2</string>
+    <string name="defaultPort">9998</string>
+    <string name="defaultTid">00000001</string>
 
     <!--以下为旧程序需要-->
     <string name="action_settings">Settings</string>
@@ -55,8 +63,8 @@
     <string name="download_id">TASK ID</string>
     <string name="bluetooth_mac">BT  DEVICES</string>
     <string name="waiting_pair_result">Waiting pair result</string>
-    <string name="retry_get_pair_result_again">Retry get pair result again...</string>
-    <string name="retry_pair_again">Retry pair again...</string>
+    <string name="retry_get_pair_result_again">Retry get pair result again…</string>
+    <string name="retry_pair_again">Retry pair again…</string>
     <string name="select_only_one_paired">Select one paired device</string>
     <string name="reload">ReConfig</string>
     <string name="scan">Scan</string>
@@ -68,7 +76,7 @@
     <string name="item_version">2.VERSION</string>
     <string name="dev_mac">MAC</string>
     <string name="start">START</string>
-    <string name="start_download">starting download ...</string>
+    <string name="start_download">starting download …</string>
     <string name="desc">LOGO OF PAX</string>
     <string name="bt_mac_text">TextView</string>
     <string name="scanning">Scanning for devices…</string>
