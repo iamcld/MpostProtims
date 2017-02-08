@@ -88,35 +88,35 @@ public class BluetoothReceiver extends BroadcastReceiver {
 
 
                 //调用EasylinkSdk，打开旧协议
-                for (int i = 0; i < deleteList.size(); i++) {
-                    Thread thread = new Thread(new SwitchCommModeRunnable(mEasyLinkSdkManager,
-                            deleteList.get(i).get(MposApplication.DEVICE_NAME),
-                            deleteList.get(i).get(MposApplication.DEVICE_MAC)));
-                    thread.start();
-
 //                for (int i = 0; i < deleteList.size(); i++) {
-//                    LogUtils.d("i: " + i);
-//                    this.mHandler = new MyHandler(context, deleteList.get(i).get(MposApplication.DEVICE_MAC), deleteList.get(i).get(MposApplication.DEVICE_NAME));
-//                    MyThread myThread = new MyThread(context, deleteList.get(i).get(MposApplication.DEVICE_MAC),
-//                            deleteList.get(i).get(MposApplication.DEVICE_NAME), mHandler);
-//                    myThread.start();
+//                    Thread thread = new Thread(new SwitchCommModeRunnable(mEasyLinkSdkManager,
+//                            deleteList.get(i).get(MposApplication.DEVICE_NAME),
+//                            deleteList.get(i).get(MposApplication.DEVICE_MAC)));
+//                    thread.start();
 //
-//                    //Intent intent1 = new Intent(context, MyService.class);
-//                    Intent intent1 = new Intent(context, MyIntentService.class);
-//                    intent1.putExtra(MposApplication.DEVICE_MAC, deleteList.get(i).get(MposApplication.DEVICE_MAC));
-//                    intent1.putExtra(MposApplication.DEVICE_NAME, deleteList.get(i).get(MposApplication.DEVICE_NAME));
+////                for (int i = 0; i < deleteList.size(); i++) {
+////                    LogUtils.d("i: " + i);
+////                    this.mHandler = new MyHandler(context, deleteList.get(i).get(MposApplication.DEVICE_MAC), deleteList.get(i).get(MposApplication.DEVICE_NAME));
+////                    MyThread myThread = new MyThread(context, deleteList.get(i).get(MposApplication.DEVICE_MAC),
+////                            deleteList.get(i).get(MposApplication.DEVICE_NAME), mHandler);
+////                    myThread.start();
+////
+////                    //Intent intent1 = new Intent(context, MyService.class);
+////                    Intent intent1 = new Intent(context, MyIntentService.class);
+////                    intent1.putExtra(MposApplication.DEVICE_MAC, deleteList.get(i).get(MposApplication.DEVICE_MAC));
+////                    intent1.putExtra(MposApplication.DEVICE_NAME, deleteList.get(i).get(MposApplication.DEVICE_NAME));
+////
+////                    context.startService(intent1);
+////                }
 //
-//                    context.startService(intent1);
+////                for (int i = 0; i < deleteList.size(); i++) {
+////                    LogUtils.d("i: " + i);
+////                    this.mHandler = new MyHandler(context, deleteList.get(i).get(MposApplication.DEVICE_MAC), deleteList.get(i).get(MposApplication.DEVICE_NAME));
+////                    MyThread myThread = new MyThread(context, deleteList.get(i).get(MposApplication.DEVICE_MAC),
+////                            deleteList.get(i).get(MposApplication.DEVICE_NAME), mHandler);
+////                    myThread.start();
+////                }
 //                }
-
-//                for (int i = 0; i < deleteList.size(); i++) {
-//                    LogUtils.d("i: " + i);
-//                    this.mHandler = new MyHandler(context, deleteList.get(i).get(MposApplication.DEVICE_MAC), deleteList.get(i).get(MposApplication.DEVICE_NAME));
-//                    MyThread myThread = new MyThread(context, deleteList.get(i).get(MposApplication.DEVICE_MAC),
-//                            deleteList.get(i).get(MposApplication.DEVICE_NAME), mHandler);
-//                    myThread.start();
-//                }
-                }
             } else if (action.equals(MposApplication.RECEIVER_ACTION)) {
                 //自定义广播:蓝牙自动匹配
                 String mac = intent.getStringExtra(MposApplication.DEVICE_MAC);
@@ -182,8 +182,6 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 @Override
                 public void onError(int code, String errDesc) {
                     LogUtils.e("connect error,code="+code);
-                    LogUtils.e("connect error,errDesc="+errDesc);
-                    System.out.print("errDesc"+errDesc);
                 }
             });
         }

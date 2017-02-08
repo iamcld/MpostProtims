@@ -83,7 +83,7 @@ public class BtRepairAdapter extends BaseAdapter{
     }
     //数据库中
     public void findDatafromDatabase(){
-        DatabaseAdapter databaseAdapter = new DatabaseAdapter(context);;
+        DatabaseAdapter databaseAdapter = new DatabaseAdapter(context);
     }
 
     @Override

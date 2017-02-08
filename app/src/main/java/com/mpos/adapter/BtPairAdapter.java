@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apkfuns.logutils.LogUtils;
 import com.example.chenld.mpostprotimstest.R;
 import com.mpos.MposApplication;
+import com.paxsz.easylink.api.EasyLinkSdkManager;
+import com.paxsz.easylink.cmd.DeviceInfo;
+import com.paxsz.easylink.listener.CloseDeviceListener;
+import com.paxsz.easylink.listener.OpenDeviceListener;
+import com.paxsz.easylink.listener.SwitchCommModeListener;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -165,33 +168,42 @@ public class BtPairAdapter extends BaseAdapter{
                     .get(MposApplication.DEVICE_MAC));
 
             if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_NONE) {
-                try {
-                    //利用反射方法调用BluetoothDevice.createBond(BluetoothDevice remoteDevice);
-                    Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
-                    Toast.makeText(context, "开始配对", Toast.LENGTH_SHORT).show();
-                    createBondMethod.invoke(bluetoothDevice);//开始配对
-                    long start = System.currentTimeMillis();
-                    long end = System.currentTimeMillis() + 5000;
-                    while (end - start > 0) {
-                        start = System.currentTimeMillis();
-                        if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
-//
-                            Intent intent = new Intent();
-                            intent.setAction(MposApplication.RECEIVER_ACTION);//自动匹配
-                            intent.putExtra(MposApplication.DEVICE_MAC, bluetoothDevice.getAddress());
-                            intent.putExtra(MposApplication.DEVICE_NAME, bluetoothDevice.getName());
-                            context.sendBroadcast(intent);//发送自定义广播
-                            break;
-                        }
-                    }
+                //调用EasylinkSdk，打开旧协议
 
-                } catch (NoSuchMethodException  e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                    EasyLinkSdkManager mEasyLinkSdkManager = EasyLinkSdkManager.getInstance(context);
+                    Thread thread = new Thread(new SwitchCommModeRunnable(mEasyLinkSdkManager,
+                            bluetoothDevice.getName(),
+                            bluetoothDevice.getAddress()));
+                    thread.start();
+
+
+//                try {
+//                    //利用反射方法调用BluetoothDevice.createBond(BluetoothDevice remoteDevice);
+//                    Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
+//                    Toast.makeText(context, "开始配对", Toast.LENGTH_SHORT).show();
+//                    createBondMethod.invoke(bluetoothDevice);//开始配对
+//                    long start = System.currentTimeMillis();
+//                    long end = System.currentTimeMillis() + 5000;
+//                    while (end - start > 0) {
+//                        start = System.currentTimeMillis();
+//                        if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
+////
+//                            Intent intent = new Intent();
+//                            intent.setAction(MposApplication.RECEIVER_ACTION);//自动匹配
+//                            intent.putExtra(MposApplication.DEVICE_MAC, bluetoothDevice.getAddress());
+//                            intent.putExtra(MposApplication.DEVICE_NAME, bluetoothDevice.getName());
+//                            context.sendBroadcast(intent);//发送自定义广播
+//                            break;
+//                        }
+//                    }
+//
+//                } catch (NoSuchMethodException  e) {
+//                    e.printStackTrace();
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+//                } catch (InvocationTargetException e) {
+//                    e.printStackTrace();
+//                }
             } else if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
                 Toast.makeText(context, "开始连接", Toast.LENGTH_SHORT).show();
             }
@@ -205,6 +217,56 @@ public class BtPairAdapter extends BaseAdapter{
         private TextView device_name_tv;
         private TextView device_mac_tv;
         private Button pair_button;
+    }
+
+    private static class SwitchCommModeRunnable implements Runnable{
+        private EasyLinkSdkManager mEasyLinkSdkManager;
+        private String mac;
+        private String name;
+
+        public SwitchCommModeRunnable(EasyLinkSdkManager mEasyLinkSdkManager, String name, String mac) {
+            this.mEasyLinkSdkManager = mEasyLinkSdkManager;
+            this.name = name;
+            this.mac = mac;
+        }
+
+        @Override
+        public void run() {
+            DeviceInfo deviceInfo = new DeviceInfo(name, mac);
+            mEasyLinkSdkManager.connect(deviceInfo, new OpenDeviceListener() {
+                @Override
+                public void openSucc() {
+                    LogUtils.d("connect success");
+                    //连接成功
+                    mEasyLinkSdkManager.switchCommMode(0x1, new SwitchCommModeListener() {
+                        @Override
+                        public void onSucc() {
+                            mEasyLinkSdkManager.disconnect(new CloseDeviceListener() {
+                                @Override
+                                public void closeSucc() {
+                                    LogUtils.e("disconnect success");
+                                }
+
+                                @Override
+                                public void onError(int code, String errDesc) {
+                                    LogUtils.e("disconnect error, code="+code);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError(int code, String errDesc) {
+                            LogUtils.e("switchCommMode error, code="+code);
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(int code, String errDesc) {
+                    LogUtils.e("connect error,code="+code);
+                }
+            });
+        }
     }
 
 }
