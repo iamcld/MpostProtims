@@ -42,18 +42,21 @@ public class TDES {
 	}
 
 	public static String byte2hex(byte[] b) {
-		String hs = "";
+		StringBuffer hs = new StringBuffer();
 		String stmp = "";
 		for (int n = 0; n < b.length; n++) {
 			stmp = (java.lang.Integer.toHexString(b[n] & 0XFF));
-			if (stmp.length() == 1)
-				hs = hs + "0" + stmp;
-			else
-				hs = hs + stmp;
-			if (n < b.length - 1)
-				hs = hs + ":";
+			if (stmp.length() == 1){
+				hs.append("0" + stmp);
+			}
+			else{
+				hs.append(stmp);
+			}
+			if (n < b.length - 1){
+				hs.append(":");
+			}
 		}
-		return hs.toUpperCase();
+		return hs.toString().toUpperCase();
 	}
 	    
 	public static byte[] key24(byte[] key16) {
@@ -63,7 +66,7 @@ public class TDES {
 		return key;
 	}
 	    
-	public static byte[] DataPadding(byte[] Data) {
+	public static byte[] dataPadding(byte[] Data) {
 		int len = Data.length;
 		byte[] DataPadding = new byte[len + (8 - len % 8)];
 		System.arraycopy(Data, 0, DataPadding, 0, len);

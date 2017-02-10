@@ -54,7 +54,7 @@ public class DownloadAdapter extends BaseAdapter {
     @Override
     public View getView(int pos, View convertView, ViewGroup viewGroup) {
         UpdateModel model = datas.get(pos);
-        ViewCacher cacher = null;
+        ViewCacher cacher;
 
         // the first time create the View for each item
         if (null == convertView) {
@@ -80,7 +80,7 @@ public class DownloadAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public class ViewCacher {
+    public static class ViewCacher {
         public TextView textView;
         public ProgressBar progressBar;
         public TextView value;

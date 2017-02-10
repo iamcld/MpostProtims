@@ -30,13 +30,17 @@ public class BaseActivity extends AppCompatActivity {
         ActivityCollector.removeActivity(this);
     }
 
-    //管理activity
-    public static class ActivityCollector{
 
-        public static List<Activity> activityList = new ArrayList<>();
+
+    /**
+     *  管理activity
+     */
+    public static class ActivityCollector {
+
+        private static List<Activity> activityList = new ArrayList<>();
 
         //添加activity
-        public static void addActivity(Activity activity){
+        public static void addActivity(Activity activity) {
             activityList.add(activity);
         }
 

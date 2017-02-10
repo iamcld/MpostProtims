@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 
+import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,17 +63,17 @@ public class Utils {
 	 *            ASCII字符串
 	 * @return 字符串
 	 */
-	public static String AsciiStringToString(String content) {
-		String result = "";
+	public static String asciiStringToString(String content) {
+		StringBuffer result = new StringBuffer();
 		int length = content.length() / 2;
 		for (int i = 0; i < length; i++) {
 			String c = content.substring(i * 2, i * 2 + 2);
 			int a = hexStringToAlgorism(c);
 			char b = (char) a;
 			String d = String.valueOf(b);
-			result += d;
+			result.append(d);
 		}
-		return result;
+		return result.toString();
 	}
 
 
@@ -114,18 +115,18 @@ public class Utils {
 		return crc;
 	}
 
-	public static String byte2HexStrUnFormatted(byte[] bytes, int offset, int len) {
-		if (offset > bytes.length || offset + len > bytes.length) {
-			return "";
-		}
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < len; i ++) {
-			sb.append(Integer.toHexString(bytes[i + offset] | 0xFFFFFF00).substring(6));
-//			if (((i + 1) % 16) == 0) {
-//			}
-		}
-		return sb.toString();
-	}
+//	public static String byte2HexStrUnFormatted(byte[] bytes, int offset, int len) {
+//		if (offset > bytes.length || offset + len > bytes.length) {
+//			return "";
+//		}
+//		StringBuilder sb = new StringBuilder();
+//		for (int i = 0; i < len; i ++) {
+//			sb.append(Integer.toHexString(bytes[i + offset] | 0xFFFFFF00).substring(6));
+////			if (((i + 1) % 16) == 0) {
+////			}
+//		}
+//		return sb.toString();
+//	}
 	
 	public static void logHexData(byte[] bytes, int offset, int len) {
 		if (offset > bytes.length || offset + len > bytes.length) {
@@ -201,12 +202,13 @@ public class Utils {
 			asc = "0" + asc;
 			len = asc.length();
 		}
-		byte abt[] = new byte[len];
+		//byte abt[] = new byte[len];
+		byte abt[];
 		if (len >= 2) {
 			len = len / 2;
 		}
 		byte bbt[] = new byte[len];
-		abt = asc.getBytes();
+		abt = asc.getBytes(Charset.defaultCharset());
 		int j, k;
 		for (int p = 0; p < asc.length() / 2; p++) {
 			if ((abt[2 * p] >= 'a') && (abt[2 * p] <= 'z')) {

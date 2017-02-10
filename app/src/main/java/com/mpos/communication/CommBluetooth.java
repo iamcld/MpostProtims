@@ -19,7 +19,6 @@ import java.util.UUID;
 
 public class CommBluetooth implements ICommunicator{
 
-
     private static final String TAG = "mytag";
     // fa87c0d0-afac-11de-8a39-0800200c9a66  00001101-0000-1000-8000-00805F9B34FB
     private final UUID BT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -115,7 +114,7 @@ public class CommBluetooth implements ICommunicator{
         if (isBtConnected && btOut != null){
             LogUtils.d( "bt send data, offset="+offset + ", sendLen="+sendLen);
             try {
-                Utils.logHexData(buf, 0, sendLen);
+                //Utils.logHexData(buf, 0, sendLen);
                 btOut.write(buf);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -170,7 +169,7 @@ public class CommBluetooth implements ICommunicator{
             LogUtils.d( "recv nothing");
         }
         LogUtils.d("end bt recv.....:%d", totalLen);
-        Utils.logHexData(buf, 0, totalLen);
+        //Utils.logHexData(buf, 0, totalLen);
         return totalLen;
     }
 
@@ -217,11 +216,9 @@ public class CommBluetooth implements ICommunicator{
                 btsocket = null;
                 LogUtils.d("bt closed");
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
+        } finally {
             btOut = null;
             btIn = null;
             isBtConnected = false;

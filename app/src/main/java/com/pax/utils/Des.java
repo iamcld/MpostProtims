@@ -85,9 +85,9 @@ public class Des {
 		System.arraycopy(sessionkeyleft, 0, sessionkey, 0, sessionkeyleft.length);
 		System.arraycopy(sessionkeyright, 0, sessionkey, sessionkeyleft.length, sessionkeyright.length);
 		
-		String sessionkeystr = "";
+		StringBuffer sessionkeystr = new StringBuffer();
  		for(int i = 0; i<sessionkey.length; i++){
- 			sessionkeystr += Integer.toHexString((sessionkey[i]& 0x000000FF) | 0xFFFFFF00).substring(6);
+ 			sessionkeystr.append(Integer.toHexString((sessionkey[i]& 0x000000FF) | 0xFFFFFF00).substring(6));
 		}
  		System.out.println("sessionkey:" + sessionkeystr);
  		

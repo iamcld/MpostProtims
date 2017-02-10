@@ -720,8 +720,7 @@ jint ExecIntMethod(unsigned char bRecv, jmethodID mdId, unsigned char *pszExcCls
 
     JNIEnv   *sgEnv;
     (*g_jvm)->AttachCurrentThread(g_jvm, &sgEnv, NULL);
-
-     LOGE("ExecIntMethod in");
+    LOGE("ExecIntMethod in");
 	if(NULL == sgEnv || NULL==psDataBuff)
 	{
 		return -1000;
@@ -734,7 +733,6 @@ jint ExecIntMethod(unsigned char bRecv, jmethodID mdId, unsigned char *pszExcCls
 	jbyteArray data = (*sgEnv)->NewByteArray(sgEnv, iDataLen);
 	if(NULL == data)
 	{
-	    LOGE("DeleteLocalRef 735");
 		(*sgEnv)->DeleteLocalRef(sgEnv, data);
 		return -1000;
 	}
@@ -744,7 +742,6 @@ jint ExecIntMethod(unsigned char bRecv, jmethodID mdId, unsigned char *pszExcCls
 	exc = (*sgEnv)->ExceptionOccurred(sgEnv);
 	if(exc)
 	{
-	    LOGE("DeleteLocalRef 744");
 		(*sgEnv)->DeleteLocalRef(sgEnv, data);
 		return -1000;
 	}
@@ -759,25 +756,19 @@ jint ExecIntMethod(unsigned char bRecv, jmethodID mdId, unsigned char *pszExcCls
 		(*sgEnv)->ExceptionClear(sgEnv);
 		if(pszExcCls && strcmp(pszExcCls, "")!=0 )
 		{
-		 LOGE("java/io/IOException 759");
 			excClz = (*sgEnv)->FindClass(sgEnv, pszExcCls);
-			LOGE("java/io/IOException 761");
 		}
 		else
 		{
 			excClz = (*sgEnv)->FindClass(sgEnv, "java/lang/IllegalAceessException");
 		}
 		if(NULL == excClz) {
-		LOGE("java/io/IOException 766");
 			(*sgEnv)->DeleteLocalRef(sgEnv, data);
 			return -1001;
 		}
 		if(pszExcMsg)
 		{
-		    LOGE("java/io/IOException 774");
-
 			(*sgEnv)->ThrowNew(sgEnv, excClz, pszExcMsg);
-			LOGE("java/io/IOException 776");
 		}
 		else
 		{
@@ -793,12 +784,10 @@ jint ExecIntMethod(unsigned char bRecv, jmethodID mdId, unsigned char *pszExcCls
 		exc = (*sgEnv)->ExceptionOccurred(sgEnv);
 		if (exc)
 		{
-		    LOGE("DeleteLocalRef 788");
 			(*sgEnv)->DeleteLocalRef(sgEnv, data);
 			return -2000;
 		}
 	}
-	LOGE("DeleteLocalRef 793");
 	(*sgEnv)->DeleteLocalRef(sgEnv, data);
 
 	LOGE("ExecIntMethod out");

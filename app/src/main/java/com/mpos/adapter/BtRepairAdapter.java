@@ -67,8 +67,6 @@ public class BtRepairAdapter extends BaseAdapter{
 
     }
 
-
-
     //将内容插入到数据库中
     public void insertDataToDatabase(String mac, String name){
         DatabaseAdapter databaseAdapter = new DatabaseAdapter(context);
@@ -80,10 +78,6 @@ public class BtRepairAdapter extends BaseAdapter{
             databaseAdapter.rawAdd(mPosNew);
         }
 
-    }
-    //数据库中
-    public void findDatafromDatabase(){
-        DatabaseAdapter databaseAdapter = new DatabaseAdapter(context);
     }
 
     @Override

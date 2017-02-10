@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import android.support.v4.app.FragmentActivity;
 //import android.support.v4.app.FragmentTabHost;
 import com.example.chenld.mpostprotimstest.R;
-import com.fragmenthost.FragmentTabHost;//修改源码后的FragmentTabHost
+import com.fragmenthost.FragmentTabHost; //修改源码后的FragmentTabHost
 import com.mpos.fragment.BTFragment;
 import com.mpos.fragment.USBFragment;
 import com.mpos.fragment.WIFIFragment;

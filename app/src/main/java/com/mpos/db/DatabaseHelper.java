@@ -1,9 +1,9 @@
+
 package com.mpos.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 /**
  * Created by chenld on 2016/12/19.
  */
@@ -11,14 +11,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "mpos.db";
     private static final int VERSION = 1;
 
-    private String mac;
-    private String name;//列
-    private String sn;//列
-    private String pn;//列
-    private String os_version;//列
-    private String boot_version;//列
-    private String battery;//列
-    private String isupdate;
+//    private String mac;
+//    private String name;//列
+//    private String sn;//列
+//    private String pn;//列
+//    private String os_version;//列
+//    private String boot_version;//列
+//    private String battery;//列
+//    private String isupdate;
 
     private static final String CREATE_TABLE_MPOS = "CREATE TABLE mpos(_mac TEXT PRIMARY KEY," +
             "name TEXT,sn TEXT,pn TEXT,os_version TEXT,boot_version TEXT,battery TEXT,isupdate TEXT)";

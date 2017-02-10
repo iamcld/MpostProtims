@@ -420,7 +420,6 @@ public class DownloadActivity extends Activity {
             View view = listview.getChildAt(position - first);
             if (view.getTag() instanceof DownloadAdapter.ViewCacher) {
                 DownloadAdapter.ViewCacher vh = (DownloadAdapter.ViewCacher) view.getTag();
-                // TODO : if mac equal
                 vh.progressBar.setProgress(model.getProgress());
             }
         }
@@ -453,7 +452,7 @@ public class DownloadActivity extends Activity {
         public void run() {
             DatabaseAdapter databaseAdapter;
             CommTcpip commTcpip = new CommTcpip(server_ip,
-                    Integer.valueOf(server_port));
+                    Integer.parseInt(server_port));
             CommBluetooth commBluetooth = new CommBluetooth(btScannedDevs.get(i).getAddress());
             LogUtils.d("btScannedDevs.get(i).getAddress():"+btScannedDevs.get(i).getAddress());
             LogUtils.d("线程commTcpip对象:"+commTcpip);

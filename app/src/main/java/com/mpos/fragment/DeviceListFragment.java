@@ -78,8 +78,8 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
     //获取数据库中数据
     private ArrayList<MPos> mPoslist;
     //单任务线程池
-    private ExecutorService esBt = Executors.newSingleThreadExecutor();
-    private ExecutorService esTcp = Executors.newSingleThreadExecutor();
+    //private ExecutorService esBt = Executors.newSingleThreadExecutor();
+    //private ExecutorService esTcp = Executors.newSingleThreadExecutor();
     private SharedPreferences sp = null;
     private Boolean mSwitch = false;
 
@@ -93,13 +93,13 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                     edit_btn.setVisibility(View.GONE);//编辑按钮不可见
                     layout_update_delete.setVisibility(View.VISIBLE);//水平布局
                     radiogroup.clearCheck();//初始都不选中状态
-                    NotUpdateDeviceAdapter(true);
-                    UpdateDeviceAdapter(true);
+                    notUpdateDeviceAdapter(true);
+                    updateDeviceAdapter(true);
                     break;
                 case FINISH:
                     //checkBox不可见
-                    NotUpdateDeviceAdapter(false);
-                    UpdateDeviceAdapter(false);
+                    notUpdateDeviceAdapter(false);
+                    updateDeviceAdapter(false);
                     finish_btn.setVisibility(View.GONE);//完成按钮不可见
                     edit_btn.setVisibility(View.VISIBLE);//编辑按钮可见
                     layout_update_delete.setVisibility(View.GONE);//水平布局
@@ -116,8 +116,8 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                             checkUpdateDevice.add(name+ "\n"+ mac);
                         }
                     }
-                    NotUpdateDeviceAdapter(false);
-                    UpdateDeviceAdapter(false);
+                    notUpdateDeviceAdapter(false);
+                    updateDeviceAdapter(false);
 
                     if (Utils.isNetworkAvailable(getContext(), mSwitch)){
                         if (checkUpdateDevice.size() > 0){
@@ -173,8 +173,8 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                         }
                     }
 
-                    NotUpdateDeviceAdapter(false);
-                    UpdateDeviceAdapter(false);
+                    notUpdateDeviceAdapter(false);
+                    updateDeviceAdapter(false);
                     updateDeviceAdapter.notifyDataSetChanged();
                     notUpdateDeviceAdapter.notifyDataSetChanged();
 
@@ -264,13 +264,13 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
         layout_update_delete.setVisibility(View.GONE);//默认不显示
     }
 
-    public void NotUpdateDeviceAdapter(Boolean isShow) {
+    public void notUpdateDeviceAdapter(Boolean isShow) {
         notUpdateDeviceAdapter = new NotUpdateDeviceAdapter(getContext(), datasNotUpdate, isShow);
         notUpdateList.setAdapter(notUpdateDeviceAdapter);
 
     }
 
-    public void UpdateDeviceAdapter(Boolean isShow) {
+    public void updateDeviceAdapter(Boolean isShow) {
         updateDeviceAdapter = new UpdateDeviceAdapter(getContext(), datasUpdate, isShow, mSwitch);
         updateList.setAdapter(updateDeviceAdapter);
     }
@@ -372,8 +372,8 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
         initUpdataDataList();
         initNotUpdataDataList();
         //数据库数据可能在其他activity中发生改变，故在onStart阶段加载数据
-        NotUpdateDeviceAdapter(false);
-        UpdateDeviceAdapter(false);
+        notUpdateDeviceAdapter(false);
+        updateDeviceAdapter(false);
     }
 
 
@@ -406,6 +406,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                 //new Thread(new ProtimsRunnable(getContext(), mPoslist.get(i), handler)).start();
                 //ExecutorService es = Executors.newSingleThreadExecutor();
                 //esTcp.execute(new ProtimsRunnable(getContext(), mPoslist.get(i).getMac(), handler));
+                //TODO
                 new Thread(new ProtimsRunnable(getContext(), mPoslist.get(i).getMac(), handler)).start();
             }
 
@@ -458,8 +459,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
             if (key_tid == null) {
                 key_tid = "00000001";
             }
-
-            commTcpip = new CommTcpip(server_ip, Integer.valueOf(server_port));
+            commTcpip = new CommTcpip(server_ip, Integer.parseInt(server_port));
 
             mposSDK = new MposSDK();
             mposSDK.setTermId(key_tid);
@@ -510,7 +510,8 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
 
         @Override
         public void run() {
-            byte[] termVerInfo = new byte[8 + 1];
+            //byte[] termVerInfo = new byte[8 + 1];
+            byte[] termVerInfo;
             byte[] termSN = new byte[8 + 1];
             //byte[] terminalInfo = new byte[30 + 1];
             CommBluetooth commBluetooth;
@@ -537,18 +538,18 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
                 int iRet = mposSDK.getTermSn(termSN);
                 LogUtils.i("getTermSn iRet:" + iRet);
                 if (iRet == 0) {
-                    LogUtils.i("终端sn为:" + new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)));
+                    LogUtils.i("终端sn为:" + Utils.asciiStringToString(Utils.bcd2Str(termSN)));
                     termVerInfo = mposSDK.getTermVerInfo();
-                    LogUtils.i("终端版本为:" + new Utils().bcd2Str(termVerInfo));
+                    LogUtils.i("终端版本为:" + Utils.bcd2Str(termVerInfo));
 //                terminalInfo = mposSDK.getTerminalInfo();
 //                LogUtils.i("终端信息为:" + new Utils().bcd2Str(termVerInfo));
 
                     if (termVerInfo[2] > 9) {
-                        mPos = new MPos(oldMpos.getMac(), oldMpos.getName(), new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)),
+                        mPos = new MPos(oldMpos.getMac(), oldMpos.getName(), Utils.asciiStringToString(Utils.bcd2Str(termSN)),
                                 oldMpos.getPn(), String.valueOf(termVerInfo[1]) + "." + String.valueOf(termVerInfo[2]),
                                 String.valueOf(termVerInfo[0]), oldMpos.getBattery());
                     } else {
-                        mPos = new MPos(oldMpos.getMac(), oldMpos.getName(), new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)),
+                        mPos = new MPos(oldMpos.getMac(), oldMpos.getName(), Utils.asciiStringToString(Utils.bcd2Str(termSN)),
                                 null, String.valueOf(termVerInfo[1]) + ".0" + String.valueOf(termVerInfo[2]),
                                 String.valueOf(termVerInfo[0]), oldMpos.getBattery());
                     }

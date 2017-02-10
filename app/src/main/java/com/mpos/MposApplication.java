@@ -1,3 +1,4 @@
+
 package com.mpos;
 
 
@@ -11,15 +12,15 @@ import com.example.chenld.mpostprotimstest.R;
  * Created by chenld on 2016/12/31.
  */
 
-public class MposApplication  extends Application{
+public class MposApplication extends Application {
 
     public static final String DEVICE_MAC = "deviceMac";
     public static final String DEVICE_NAME = "deviceName";
     public static final String RECEIVER_ACTION = "android.bluetooth.device.action.MY_BROADCAST";
     public static final String CHECK_UPDATE_DEVICE = "checkUpdataDevice";
-    public static int[] img = {R.drawable.d180, R.drawable.d180, R.drawable.d210,
-                                R.drawable.d210, R.drawable.u19};
-    public static String[] deviceName = {"d180", "D180", "d210", "D210"};
+    public static final int[] img = {R.drawable.d180, R.drawable.d180, R.drawable.d210,
+            R.drawable.d210, R.drawable.u19};
+    public static final String[] deviceName = {"d180", "D180", "d210", "D210"};
 
 
     @Override

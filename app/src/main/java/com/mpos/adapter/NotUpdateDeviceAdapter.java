@@ -37,7 +37,9 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
         this.context = context;
         this.list = list;
         this.isShow = isShow;
-        isSelected = new HashMap<>();
+        if (isSelected == null){
+            isSelected = new HashMap<>();
+        }
         initDate();
     }
 
@@ -70,7 +72,7 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.not_updata_device_item, null);
             vh = new ViewHolder();
-            vh.not_showArea = (RelativeLayout) convertView.findViewById(R.id.not_layout_showArea);
+            //vh.not_showArea = (RelativeLayout) convertView.findViewById(R.id.not_layout_showArea);
             vh.not_checkBox = (CheckBox) convertView.findViewById(R.id.not_checkbox);
             vh.not_img_devece = (ImageView) convertView.findViewById(R.id.not_img_devece);
             vh.not_deviceName = (TextView) convertView.findViewById(R.id.not_device_name_tv);
@@ -183,7 +185,7 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
     }
 
 
-    private static class ImageClickListener implements View.OnClickListener{
+    private static class ImageClickListener implements View.OnClickListener {
         private Context context;
         private int position;
         private ArrayList<HashMap<String, String>> list = new ArrayList<>();
@@ -206,7 +208,7 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder{
-        private RelativeLayout not_showArea;
+        //private RelativeLayout not_showArea;
 
         private CheckBox not_checkBox;
         private ImageView not_img_devece;
@@ -221,4 +223,5 @@ public class NotUpdateDeviceAdapter extends BaseAdapter {
 
         private LinearLayout not_hideArea;
     }
+
 }

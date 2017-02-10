@@ -37,14 +37,14 @@ public class CommTcpip implements ICommunicator {
     }
 
     //与TMS相连接
-    public  boolean connect() {
+    public boolean connect() {
         try {
 
             LogUtils.d("当前线程:" + Thread.currentThread());
             client = new Socket();
             client.connect(new InetSocketAddress(serverAddr, serverPort), CONN_TIMEOUT_DEFAULT);
 
-            LogUtils.d("TCP套接字client:"+client);
+            LogUtils.d("TCP套接字client:" + client);
             client.setSoTimeout(RECV_TIMEOUT_DEFAULT);
             ipOutputStream = client.getOutputStream();
             ipInputStream = client.getInputStream();
@@ -63,11 +63,10 @@ public class CommTcpip implements ICommunicator {
         }
 
         isIpConected = true;
-        LogUtils.d("IP connected, isIpConected:" + isIpConected);
         return true;
     }
 
-    public  int send(byte[] buf, int offset, int sendLen) {
+    public int send(byte[] buf, int offset, int sendLen) {
         if (null == client || null == ipOutputStream || !isIpConected) {
             LogUtils.d("client:" + client);
             LogUtils.d("ipOutputStream:" + ipOutputStream);
@@ -93,7 +92,7 @@ public class CommTcpip implements ICommunicator {
 
     }
 
-    public  int recv(byte[] buf, int offset, int maxLen) {
+    public int recv(byte[] buf, int offset, int maxLen) {
         if (null == client || null == ipInputStream || !isIpConected) {
             LogUtils.d("null == client || null == ipInputStream || !isIpConected");
             return -1;
@@ -122,9 +121,9 @@ public class CommTcpip implements ICommunicator {
     }
 
     public void reset() {
-        if (null == client || null == ipOutputStream || null == ipInputStream || !isIpConected) {
-            return;
-        }
+//        if (null == client || null == ipOutputStream || null == ipInputStream || !isIpConected) {
+//            return;
+//        }
     }
 
     public void close() {
@@ -133,14 +132,13 @@ public class CommTcpip implements ICommunicator {
         }
         try {
             LogUtils.d("ip client closing...");
-            if (client != null) {
-                LogUtils.d("关闭TCP套接字:"+client);
-                client.shutdownInput();
-                client.shutdownOutput();
-                client.close();
-                client = null;
-                LogUtils.d("ip client closed");
-            }
+            LogUtils.d("关闭TCP套接字:" + client);
+            client.shutdownInput();
+            client.shutdownOutput();
+            client.close();
+            client = null;
+            LogUtils.d("ip client closed");
+
         } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
@@ -152,7 +150,7 @@ public class CommTcpip implements ICommunicator {
     }
 
     public boolean isConnected() {
-        if (null == client || null == ipInputStream || null == ipOutputStream || !isIpConected) {
+        if (null == client || null == ipInputStream || null == ipOutputStream) {
             return false;
         }
         return isIpConected;

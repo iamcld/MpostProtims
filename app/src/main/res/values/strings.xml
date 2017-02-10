@@ -144,6 +144,5 @@
     <string name="about">\n Solfware: PAX MPOS ProTims for Android</string>
     <string name="reverse_right">\n PAX Computer Technology（Shenzhen）Co., Ltd. \n\n All right reversed\n\n Copyright ? 2015~2020</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

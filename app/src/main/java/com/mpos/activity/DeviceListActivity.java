@@ -61,29 +61,29 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
                     edit_btn.setVisibility(View.GONE);//编辑按钮不可见
                     layout_update_delete.setVisibility(View.VISIBLE);//水平布局
                     radiogroup.clearCheck();//初始都不选中状态
-                    NotUpdateDeviceAdapter(true);
-                    UpdateDeviceAdapter(true);
+                    notUpdateDeviceAdapter(true);
+                    updateDeviceAdapter(true);
                     break;
                 case FINISH:
                     //checkBox不可见
-                    NotUpdateDeviceAdapter(false);
-                    UpdateDeviceAdapter(false);
+                    notUpdateDeviceAdapter(false);
+                    updateDeviceAdapter(false);
                     finish_btn.setVisibility(View.GONE);//完成按钮不可见
                     edit_btn.setVisibility(View.VISIBLE);//编辑按钮可见
                     layout_update_delete.setVisibility(View.GONE);//水平布局
                     break;
                 case UPDATE:
                     Toast.makeText(DeviceListActivity.this, "update pos",Toast.LENGTH_SHORT).show();
-                    NotUpdateDeviceAdapter(false);
-                    UpdateDeviceAdapter(false);
+                    notUpdateDeviceAdapter(false);
+                    updateDeviceAdapter(false);
                     finish_btn.setVisibility(View.GONE);//完成按钮不可见
                     edit_btn.setVisibility(View.VISIBLE);//编辑按钮可见
                     layout_update_delete.setVisibility(View.GONE);//水平布局
                     break;
                 case DELETE:
                     Toast.makeText(DeviceListActivity.this, "delete pos",Toast.LENGTH_SHORT).show();
-                    NotUpdateDeviceAdapter(false);
-                    UpdateDeviceAdapter(false);
+                    notUpdateDeviceAdapter(false);
+                    updateDeviceAdapter(false);
                     finish_btn.setVisibility(View.GONE);//完成按钮不可见
                     edit_btn.setVisibility(View.VISIBLE);//编辑按钮可见
                     layout_update_delete.setVisibility(View.GONE);//水平布局
@@ -126,14 +126,14 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         layout_update_delete.setVisibility(View.GONE);//默认不显示
     }
 
-    public void NotUpdateDeviceAdapter(Boolean isShow){
+    public void notUpdateDeviceAdapter(Boolean isShow){
 
         notUpdateDeviceAdapter = new NotUpdateDeviceAdapter(this, datasNotUpdate, isShow);
         notUpdateList.setAdapter(notUpdateDeviceAdapter);
 
     }
 
-    public void UpdateDeviceAdapter(Boolean isShow){
+    public void updateDeviceAdapter(Boolean isShow){
         updateDeviceAdapter = new UpdateDeviceAdapter(this, datasUpdate, isShow, true);
         updateList.setAdapter(updateDeviceAdapter);
     }
@@ -181,8 +181,8 @@ public class DeviceListActivity extends Activity implements View.OnClickListener
         super.onStart();
         initDataList();
         //数据库数据可能在其他activity中发生改变，故在onStart阶段加载数据
-        NotUpdateDeviceAdapter(false);
-        UpdateDeviceAdapter(false);
+        notUpdateDeviceAdapter(false);
+        updateDeviceAdapter(false);
     }
 
     //初始化列表数据

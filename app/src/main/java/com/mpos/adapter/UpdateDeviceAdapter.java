@@ -45,7 +45,10 @@ public class UpdateDeviceAdapter extends BaseAdapter{
         this.context = context;
         this.list = list;
         this.isShow = isShow;
-        isSelected = new HashMap<>();
+        if (isSelected == null){
+            isSelected = new HashMap<>();
+        }
+
         this.mSwitch = mSwitch;
         // 初始化数据
         initDate();
@@ -80,7 +83,7 @@ public class UpdateDeviceAdapter extends BaseAdapter{
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.updata_device_item, null);
             vh = new ViewHolder();
-            vh.showArea = (RelativeLayout) convertView.findViewById(R.id.layout_showArea);
+            //vh.showArea = (RelativeLayout) convertView.findViewById(R.id.layout_showArea);
             vh.update_checkBox = (CheckBox) convertView.findViewById(R.id.update_checkbox);
             vh.img_devece = (ImageView) convertView.findViewById(R.id.img_devece);
             vh.deviceName = (TextView) convertView.findViewById(R.id.device_name_tv);
@@ -168,12 +171,12 @@ public class UpdateDeviceAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"checkBox",Toast.LENGTH_SHORT).show();
-                if(isSelected.get(position)){
+                if(UpdateDeviceAdapter.isSelected.get(position)){
                     LogUtils.d("checkBox set false");
-                    isSelected.put(position,false);
+                    UpdateDeviceAdapter.isSelected.put(position,false);
                     setIsSelected(isSelected);
                 }else {
-                    isSelected.put(position,true);
+                    UpdateDeviceAdapter.isSelected.put(position,true);
                     LogUtils.d("checkBox set true");
                     setIsSelected(isSelected);
                 }
@@ -237,7 +240,7 @@ public class UpdateDeviceAdapter extends BaseAdapter{
 
 
     private static class ViewHolder{
-        private RelativeLayout showArea;
+        //private RelativeLayout showArea;
 
         private CheckBox update_checkBox;
         private ImageView img_devece;

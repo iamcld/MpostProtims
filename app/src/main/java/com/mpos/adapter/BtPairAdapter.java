@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +24,15 @@ import com.paxsz.easylink.listener.OpenDeviceListener;
 import com.paxsz.easylink.listener.SwitchCommModeListener;
 
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by chenld on 2016/12/12.
  */
-public class BtPairAdapter extends BaseAdapter{
+public class BtPairAdapter extends BaseAdapter {
     private static final String TAG = "BtPairAdapter";
     private Context context;
     private ArrayList<HashMap<String, String>> list;
@@ -42,20 +45,20 @@ public class BtPairAdapter extends BaseAdapter{
     }
 
     //动态添加新扫描到的蓝牙设备
-    public void addDevice(HashMap<String, String> device){
-        if(device == null){
+    public void addDevice(HashMap<String, String> device) {
+        if (device == null) {
             return;
         }
         boolean flag = false;
-        String btAddress =  device.get(MposApplication.DEVICE_MAC);
+        String btAddress = device.get(MposApplication.DEVICE_MAC);
         //比较当前扫描到的蓝牙设备mac是否与列表中已有设备的mac一致
-        for (int i = 0; i < list.size(); i++){
-            if(list.get(i).get(MposApplication.DEVICE_MAC).equals(btAddress)){
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).get(MposApplication.DEVICE_MAC).equals(btAddress)) {
                 //若有，则标记为true，后续不添加到列表上
-               flag = true;
+                flag = true;
             }
         }
-        if (!flag ){
+        if (!flag) {
 
             list.add(device);
         }
@@ -63,9 +66,9 @@ public class BtPairAdapter extends BaseAdapter{
     }
 
     //自动匹配时调用
-    public void deleteDevice(String mac){
-        for (int i = 0; i < list.size(); i++){
-            if (list.get(i).get(MposApplication.DEVICE_MAC).equals(mac)){
+    public void deleteDevice(String mac) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).get(MposApplication.DEVICE_MAC).equals(mac)) {
                 list.remove(i);
                 break;
             }
@@ -73,12 +76,13 @@ public class BtPairAdapter extends BaseAdapter{
     }
 
     //手动匹配时调用
-    public void deleteDevice(ArrayList<HashMap<String, String>> deleteList){
+    public void deleteDevice(ArrayList<HashMap<String, String>> deleteList) {
 
         //LogUtils.i("删除列表:"+deleteList);
         for (int j = 0; j < deleteList.size(); j++) {
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).get(MposApplication.DEVICE_MAC).equals(deleteList.get(j).get(MposApplication.DEVICE_MAC))) {
+                if (list.get(i).get(MposApplication.DEVICE_MAC)
+                        .equals(deleteList.get(j).get(MposApplication.DEVICE_MAC))){
                     list.remove(i);
                     break;
                 }
@@ -105,7 +109,7 @@ public class BtPairAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHodler vh;
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.bt_pair_item, null);
 
@@ -115,11 +119,11 @@ public class BtPairAdapter extends BaseAdapter{
             vh.device_mac_tv = (TextView) convertView.findViewById(R.id.bt_pair_device_mac);
             vh.pair_button = (Button) convertView.findViewById(R.id.bt_pair_btn);
             convertView.setTag(vh);
-        }else{
+        } else {
             vh = (ViewHodler) convertView.getTag();
         }
 
-        final HashMap<String,String> items = list.get(position);
+        final HashMap<String, String> items = list.get(position);
         //vh.imageView.setImageResource(items.get("deviceImage"));
         vh.device_name_tv.setText(items.get(MposApplication.DEVICE_NAME));
         vh.device_mac_tv.setText(items.get(MposApplication.DEVICE_MAC));
@@ -129,13 +133,14 @@ public class BtPairAdapter extends BaseAdapter{
 
         return convertView;
     }
-    private void setImageResouse(HashMap<String,String> items, ViewHodler vh){
+
+    private void setImageResouse(HashMap<String, String> items, ViewHodler vh) {
         boolean flag = false;
         //LogUtils.d("items:"+items);
-        for (int i=0; i<MposApplication.deviceName.length; i++){
+        for (int i = 0; i < MposApplication.deviceName.length; i++) {
 
             if (items.get(MposApplication.DEVICE_NAME) != null &&
-                    items.get(MposApplication.DEVICE_NAME).indexOf(MposApplication.deviceName[i]) != -1 ){
+                    items.get(MposApplication.DEVICE_NAME).contains(MposApplication.deviceName[i])) {
                 vh.device_Image.setImageResource(MposApplication.img[i]);
                 flag = true;
                 break;
@@ -143,7 +148,7 @@ public class BtPairAdapter extends BaseAdapter{
         }
 
         //设置默认图片
-        if (!flag){
+        if (!flag) {
             vh.device_Image.setImageResource(MposApplication.img[4]);
         }
     }
@@ -168,42 +173,39 @@ public class BtPairAdapter extends BaseAdapter{
                     .get(MposApplication.DEVICE_MAC));
 
             if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_NONE) {
-                //调用EasylinkSdk，打开旧协议
+//                //调用EasylinkSdk，打开旧协议
+//                EasyLinkSdkManager mEasyLinkSdkManager = EasyLinkSdkManager.getInstance(context);
+//                //连接成功，指示pos终端打开旧协议
+//                Thread thread = new Thread(new SwitchCommModeRunnable(mEasyLinkSdkManager,
+//                        bluetoothDevice.getName(),
+//                        bluetoothDevice.getAddress()));
+//                thread.start();
+                try {
+                    //利用反射方法调用BluetoothDevice.createBond(BluetoothDevice remoteDevice);
+                    Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
+                    Toast.makeText(context, "开始配对", Toast.LENGTH_SHORT).show();
+                    createBondMethod.invoke(bluetoothDevice);//开始配对
+                    long start = System.currentTimeMillis();
+                    long end = System.currentTimeMillis() + 5000;
+                    while (end - start > 0) {
+                        start = System.currentTimeMillis();
+                        if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
+                            Intent intent = new Intent();
+                            intent.setAction(MposApplication.RECEIVER_ACTION);//自动匹配
+                            intent.putExtra(MposApplication.DEVICE_MAC, bluetoothDevice.getAddress());
+                            intent.putExtra(MposApplication.DEVICE_NAME, bluetoothDevice.getName());
+                            context.sendBroadcast(intent);//发送自定义广播
+                            break;
+                        }
+                    }
 
-                    EasyLinkSdkManager mEasyLinkSdkManager = EasyLinkSdkManager.getInstance(context);
-                    Thread thread = new Thread(new SwitchCommModeRunnable(mEasyLinkSdkManager,
-                            bluetoothDevice.getName(),
-                            bluetoothDevice.getAddress()));
-                    thread.start();
-
-
-//                try {
-//                    //利用反射方法调用BluetoothDevice.createBond(BluetoothDevice remoteDevice);
-//                    Method createBondMethod = BluetoothDevice.class.getMethod("createBond");
-//                    Toast.makeText(context, "开始配对", Toast.LENGTH_SHORT).show();
-//                    createBondMethod.invoke(bluetoothDevice);//开始配对
-//                    long start = System.currentTimeMillis();
-//                    long end = System.currentTimeMillis() + 5000;
-//                    while (end - start > 0) {
-//                        start = System.currentTimeMillis();
-//                        if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
-////
-//                            Intent intent = new Intent();
-//                            intent.setAction(MposApplication.RECEIVER_ACTION);//自动匹配
-//                            intent.putExtra(MposApplication.DEVICE_MAC, bluetoothDevice.getAddress());
-//                            intent.putExtra(MposApplication.DEVICE_NAME, bluetoothDevice.getName());
-//                            context.sendBroadcast(intent);//发送自定义广播
-//                            break;
-//                        }
-//                    }
-//
-//                } catch (NoSuchMethodException  e) {
-//                    e.printStackTrace();
-//                } catch (IllegalAccessException e) {
-//                    e.printStackTrace();
-//                } catch (InvocationTargetException e) {
-//                    e.printStackTrace();
-//                }
+                } catch (NoSuchMethodException  e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             } else if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
                 Toast.makeText(context, "开始连接", Toast.LENGTH_SHORT).show();
             }
@@ -211,62 +213,61 @@ public class BtPairAdapter extends BaseAdapter{
         }
     }
 
-
-    private static class ViewHodler{
+    private static class ViewHodler {
         private ImageView device_Image;
         private TextView device_name_tv;
         private TextView device_mac_tv;
         private Button pair_button;
     }
 
-    private static class SwitchCommModeRunnable implements Runnable{
-        private EasyLinkSdkManager mEasyLinkSdkManager;
-        private String mac;
-        private String name;
-
-        public SwitchCommModeRunnable(EasyLinkSdkManager mEasyLinkSdkManager, String name, String mac) {
-            this.mEasyLinkSdkManager = mEasyLinkSdkManager;
-            this.name = name;
-            this.mac = mac;
-        }
-
-        @Override
-        public void run() {
-            DeviceInfo deviceInfo = new DeviceInfo(name, mac);
-            mEasyLinkSdkManager.connect(deviceInfo, new OpenDeviceListener() {
-                @Override
-                public void openSucc() {
-                    LogUtils.d("connect success");
-                    //连接成功
-                    mEasyLinkSdkManager.switchCommMode(0x1, new SwitchCommModeListener() {
-                        @Override
-                        public void onSucc() {
-                            mEasyLinkSdkManager.disconnect(new CloseDeviceListener() {
-                                @Override
-                                public void closeSucc() {
-                                    LogUtils.e("disconnect success");
-                                }
-
-                                @Override
-                                public void onError(int code, String errDesc) {
-                                    LogUtils.e("disconnect error, code="+code);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onError(int code, String errDesc) {
-                            LogUtils.e("switchCommMode error, code="+code);
-                        }
-                    });
-                }
-
-                @Override
-                public void onError(int code, String errDesc) {
-                    LogUtils.e("connect error,code="+code);
-                }
-            });
-        }
-    }
+//    private static class SwitchCommModeRunnable implements Runnable {
+//        private EasyLinkSdkManager mEasyLinkSdkManager;
+//        private String mac;
+//        private String name;
+//
+//        public SwitchCommModeRunnable(EasyLinkSdkManager mEasyLinkSdkManager, String name, String mac) {
+//            this.mEasyLinkSdkManager = mEasyLinkSdkManager;
+//            this.name = name;
+//            this.mac = mac;
+//        }
+//
+//        @Override
+//        public void run() {
+//            DeviceInfo deviceInfo = new DeviceInfo(name, mac);
+//            mEasyLinkSdkManager.connect(deviceInfo, new OpenDeviceListener() {
+//                @Override
+//                public void openSucc() {
+//                    LogUtils.d("connect success");
+//                    //连接成功
+//                    mEasyLinkSdkManager.switchCommMode(0x1, new SwitchCommModeListener() {
+//                        @Override
+//                        public void onSucc() {
+//                            mEasyLinkSdkManager.disconnect(new CloseDeviceListener() {
+//                                @Override
+//                                public void closeSucc() {
+//                                    LogUtils.e("disconnect success");
+//                                }
+//
+//                                @Override
+//                                public void onError(int code, String errDesc) {
+//                                    LogUtils.e("disconnect error, code=" + code);
+//                                }
+//                            });
+//                        }
+//
+//                        @Override
+//                        public void onError(int code, String errDesc) {
+//                            LogUtils.e("switchCommMode error, code=" + code);
+//                        }
+//                    });
+//                }
+//
+//                @Override
+//                public void onError(int code, String errDesc) {
+//                    LogUtils.e("connect error,code=" + code);
+//                }
+//            });
+//        }
+//    }
 
 }

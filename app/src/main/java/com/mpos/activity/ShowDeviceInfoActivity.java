@@ -110,9 +110,9 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
                 break;
             case R.id.delete_bt:
                 tipDialog();
-
+                break;
             default:
-                    break;
+                break;
         }
 
     }
@@ -136,11 +136,11 @@ public class ShowDeviceInfoActivity extends Activity implements View.OnClickList
                     try {
                         Method removeBondMethod = BluetoothDevice.class.getMethod("removeBond");
                         removeBondMethod.invoke(bluetoothDevice);//取消匹配
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
                     } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
                         e.printStackTrace();
                     }
                 }

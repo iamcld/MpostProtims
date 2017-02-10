@@ -3,18 +3,17 @@ package com.mpos.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.chenld.mpostprotimstest.R;
 import com.mpos.activity.ShowDeviceInfoActivity;
-
+import android.support.v7.widget.RecyclerView;
 import java.util.List;
+
 
 /**
  * Created by chenld on 2016/12/6.
@@ -51,7 +50,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             super(itemView);
         }
         ImageView mImg;
-        TextView mTxt;
+        //TextView mTxt;
     }
 
     @Override

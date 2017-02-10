@@ -1,3 +1,4 @@
+
 package com.mpos.activity;
 
 import android.app.Activity;
@@ -7,8 +8,15 @@ import android.view.Window;
 
 import com.example.chenld.mpostprotimstest.R;
 
-public class AboutActivity extends Activity implements View.OnClickListener{
+/**
+ *
+ */
+public class AboutActivity extends Activity implements View.OnClickListener {
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,9 +26,13 @@ public class AboutActivity extends Activity implements View.OnClickListener{
 
     }
 
+    /**
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back_iv:
                 finish();
                 break;

@@ -96,7 +96,8 @@ public class ServerSetActivity extends Activity implements View.OnClickListener,
                     return;
                 }
                 LogUtils.d("tid is:");
-                if (tid == null || tid.length() <= 0){
+//                if (tid == null || tid.length() <= 0){
+                if (tid.length() <= 0){
                     Toast.makeText(this, "TID不允许为空", Toast.LENGTH_SHORT).show();
                     return;
                 }

@@ -1,3 +1,4 @@
+
 package com.mpos;
 
 import android.app.IntentService;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p>
- * TODO: Customize class - update intent actions and extra parameters.
+ *
  */
 public class MyIntentService extends IntentService {
     private static final String TAG = "MyIntentService";
@@ -31,58 +32,58 @@ public class MyIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        byte[] termVerInfo = new byte[8 + 1];
-        byte[] termSN = new byte[8 + 1];
-        byte[] terminalInfo = new byte[30 + 1];
-        CommBluetooth commBluetooth;
-        MposSDK mposSDK;
-        MPos mPos;
-        DatabaseAdapter databaseAdapter;
-
-        String mac = intent.getStringExtra(MposApplication.DEVICE_MAC);
-        String name = intent.getStringExtra(MposApplication.DEVICE_NAME);
-
-        LogUtils.d("当前线程:" + Thread.currentThread());
-        commBluetooth = new CommBluetooth(mac);
-        databaseAdapter = new DatabaseAdapter(this);
-        mposSDK = new MposSDK();
-        mposSDK.setMposCommunicator(commBluetooth);
-        mposSDK.initEnv();
-
-        LogUtils.i("连接蓝牙设备中...");
-
-        if (commBluetooth.connect()) {
-            LogUtils.i("蓝牙连接成功...");
-            LogUtils.d("当前线程:" + Thread.currentThread());
-            termVerInfo = mposSDK.getTermVerInfo();
-            LogUtils.i("终端版本为:" + new Utils().bcd2Str(termVerInfo));
-
-            termSN = mposSDK.getTermSN();
-            LogUtils.i("终端sn为:" + new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)));
-
-                terminalInfo = mposSDK.getTerminalInfo();
-                LogUtils.i("终端信息为:" + new Utils().bcd2Str(termVerInfo));
-
-//            if (termVerInfo[2] > 9) {
-//                mPos = new MPos(oldMpos.getMac(), oldMpos.getName(), new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)),
-//                        oldMpos.getPn(), String.valueOf(termVerInfo[1]) + "." + String.valueOf(termVerInfo[2]),
-//                        String.valueOf(termVerInfo[0]), oldMpos.getBattery(), oldMpos.getIsupdate());
-//           } else {
-//                mPos = new MPos(oldMpos.getMac(), oldMpos.getName(), new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)),
-//                        null, String.valueOf(termVerInfo[1]) + ".0" + String.valueOf(termVerInfo[2]),
-//                        String.valueOf(termVerInfo[0]), oldMpos.getBattery(), oldMpos.getIsupdate());
-//            }
-//            databaseAdapter.rawUpdate(mPos);
-            commBluetooth.close();
-
-            //发送接收标志，更新list数据
-//            Message msg = handler.obtainMessage();
-//            msg.what = BT_SEND_RECEIVE;
-//            handler.sendMessage(msg);
-        }
-
-        ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
-        LogUtils.i("数据库更新后:" + mPoslist);
+//        byte[] termVerInfo = new byte[8 + 1];
+//        byte[] termSN = new byte[8 + 1];
+//        byte[] terminalInfo = new byte[30 + 1];
+//        CommBluetooth commBluetooth;
+//        MposSDK mposSDK;
+//        MPos mPos;
+//        DatabaseAdapter databaseAdapter;
+//
+//        String mac = intent.getStringExtra(MposApplication.DEVICE_MAC);
+//        String name = intent.getStringExtra(MposApplication.DEVICE_NAME);
+//
+//        LogUtils.d("当前线程:" + Thread.currentThread());
+//        commBluetooth = new CommBluetooth(mac);
+//        databaseAdapter = new DatabaseAdapter(this);
+//        mposSDK = new MposSDK();
+//        mposSDK.setMposCommunicator(commBluetooth);
+//        mposSDK.initEnv();
+//
+//        LogUtils.i("连接蓝牙设备中...");
+//
+//        if (commBluetooth.connect()) {
+//            LogUtils.i("蓝牙连接成功...");
+//            LogUtils.d("当前线程:" + Thread.currentThread());
+//            termVerInfo = mposSDK.getTermVerInfo();
+//            LogUtils.i("终端版本为:" + new Utils().bcd2Str(termVerInfo));
+//
+//            termSN = mposSDK.getTermSN();
+//            LogUtils.i("终端sn为:" + new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)));
+//
+//                terminalInfo = mposSDK.getTerminalInfo();
+//                LogUtils.i("终端信息为:" + new Utils().bcd2Str(termVerInfo));
+//
+////            if (termVerInfo[2] > 9) {
+////                mPos = new MPos(oldMpos.getMac(), oldMpos.getName(), new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)),
+////                        oldMpos.getPn(), String.valueOf(termVerInfo[1]) + "." + String.valueOf(termVerInfo[2]),
+////                        String.valueOf(termVerInfo[0]), oldMpos.getBattery(), oldMpos.getIsupdate());
+////           } else {
+////                mPos = new MPos(oldMpos.getMac(), oldMpos.getName(), new Utils().AsciiStringToString(new Utils().bcd2Str(termSN)),
+////                        null, String.valueOf(termVerInfo[1]) + ".0" + String.valueOf(termVerInfo[2]),
+////                        String.valueOf(termVerInfo[0]), oldMpos.getBattery(), oldMpos.getIsupdate());
+////            }
+////            databaseAdapter.rawUpdate(mPos);
+//            commBluetooth.close();
+//
+//            //发送接收标志，更新list数据
+////            Message msg = handler.obtainMessage();
+////            msg.what = BT_SEND_RECEIVE;
+////            handler.sendMessage(msg);
+//        }
+//
+//        ArrayList<MPos> mPoslist = databaseAdapter.rawFindAll();
+//        LogUtils.i("数据库更新后:" + mPoslist);
 
     }
 
