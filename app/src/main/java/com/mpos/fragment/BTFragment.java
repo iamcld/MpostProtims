@@ -56,22 +56,22 @@ public class BTFragment extends Fragment implements View.OnClickListener {
 
         //获取本地蓝牙适配器
         btAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (btAdapter != null){
+            btPairList();
+            btRepairList();
 
-        btPairList();
-        btRepairList();
+            //自动搜索蓝牙设备,开始广播
+            btAdapter.startDiscovery();
 
-        //自动搜索蓝牙设备,开始广播
-        btAdapter.startDiscovery();
-
-        mBluetoothReceiver = new BluetoothReceiver(getContext(), btPairAdapter, btRepairAdapter, btAdapter);
-        IntentFilter intentFilter1 =  new IntentFilter();
-        //将其action指定为BluetoothDevice.ACTION_FOUND,查找蓝牙
-        intentFilter1.addAction(BluetoothDevice.ACTION_FOUND);
-        intentFilter1.addAction(BluetoothDevice.ACTION_NAME_CHANGED);
-        intentFilter1.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        intentFilter1.addAction(MposApplication.RECEIVER_ACTION);//自动匹配
-        getActivity().registerReceiver(mBluetoothReceiver, intentFilter1);
-
+            mBluetoothReceiver = new BluetoothReceiver(getContext(), btPairAdapter, btRepairAdapter, btAdapter);
+            IntentFilter intentFilter1 =  new IntentFilter();
+            //将其action指定为BluetoothDevice.ACTION_FOUND,查找蓝牙
+            intentFilter1.addAction(BluetoothDevice.ACTION_FOUND);
+            intentFilter1.addAction(BluetoothDevice.ACTION_NAME_CHANGED);
+            intentFilter1.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+            intentFilter1.addAction(MposApplication.RECEIVER_ACTION);//自动匹配
+            getActivity().registerReceiver(mBluetoothReceiver, intentFilter1);
+        }
         return view;
     }
 
@@ -112,7 +112,7 @@ public class BTFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.stop_btn:
                 Toast.makeText(getActivity(),"停止",Toast.LENGTH_SHORT).show();
-                if(btAdapter.isDiscovering()){
+                if(btAdapter != null && btAdapter.isDiscovering()){
                     btAdapter.cancelDiscovery();
                 }
                 break;

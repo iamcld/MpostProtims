@@ -25,7 +25,8 @@
             android:gravity="center"
             android:text="@string/serverSet2"
             android:textColor="@color/textColor"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
     <LinearLayout
