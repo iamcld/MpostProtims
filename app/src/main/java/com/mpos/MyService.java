@@ -26,6 +26,8 @@ import java.util.ArrayList;
 public class MyService extends Service {
     private static final String TAG = "MyService";
     MyService myService;
+    //切换协议,0x1支持新旧协议切换，支持tms；0x0只支持新协议
+    private static final int MODE = 0x1;
 
     public MyService() {
     }
@@ -73,8 +75,8 @@ public class MyService extends Service {
                 public void openSucc() {
                     LogUtils.d("connect success");
                     //连接成功
-                    //切换协议,0x1支持新旧协议切换，支持tms；0x0只支持新协议
-                    mEasyLinkSdkManager.switchCommMode(0x1, new SwitchCommModeListener() {
+
+                    mEasyLinkSdkManager.switchCommMode(MODE, new SwitchCommModeListener() {
                         @Override
                         public void onSucc() {
                             LogUtils.e("switchCommMode successful");

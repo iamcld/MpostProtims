@@ -27,8 +27,6 @@
         </activity>
         <activity android:name="com.mpos.activity.AboutActivity" />
         <activity android:name="com.mpos.activity.ServerSetActivity" />
-        <activity android:name="com.mpos.activity.AddDeviceActivity" />
-        <activity android:name="com.mpos.activity.DeviceListActivity" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.

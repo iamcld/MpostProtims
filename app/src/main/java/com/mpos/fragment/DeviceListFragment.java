@@ -57,6 +57,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
     private final static int BT_SEND_RECEIVE = 0x5;
     private final static int PROTIMS_SEND_RECEIVE = 0x6;
 
+
     private ListView updateList;//可更新pos列表
     private ListView notUpdateList;//不可更新pos列表
     private UpdateDeviceAdapter updateDeviceAdapter;//可更新pos列表自定义适配器
@@ -591,7 +592,6 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
             }
 
         }
-
     }
 
     //初始化无更新列表数据
